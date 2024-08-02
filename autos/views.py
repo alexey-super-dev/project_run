@@ -1,5 +1,5 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 
 def get_autos(request):
-    return HttpResponse({'ok': "Hello World"})
+    return JsonResponse({'ok': "Hello World"})
