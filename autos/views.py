@@ -2,4 +2,4 @@ from django.http import HttpResponse
 
 
 def get_autos(request):
-    return HttpResponse("Hello World")
+    return HttpResponse({'ok': "Hello World"})
