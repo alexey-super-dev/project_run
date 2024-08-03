@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from autos.views import get_autos
+from autos.views import get_autos, get_autos_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('autos/', get_autos, name='autos'),  # Fix made here
+    path('autos/', get_autos, name='autos'),
+    path('autos_page/', get_autos_page, name='autos_page'),
 ]
