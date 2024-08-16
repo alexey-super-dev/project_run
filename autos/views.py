@@ -30,5 +30,5 @@ class RunsViewSet(mixins.CreateModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        1/0
+        a = b
         return Response(status=status.HTTP_204_NO_CONTENT)
