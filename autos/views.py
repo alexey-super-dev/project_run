@@ -27,8 +27,14 @@ class RunsViewSet(mixins.CreateModelMixin,
     queryset = Run.objects.all()
     serializer_class = RunSerializer
 
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
+    def list(self, request, *args, **kwargs):
         a = b
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
