@@ -4,6 +4,8 @@ from autos.models import Run
 
 
 class RunSerializer(serializers.ModelSerializer):
+    comment2 = serializers.CharField(required=True)
+
     class Meta:
         model = Run
-        fields = '__all__'
+        fields = ['id', 'runner', 'comment', 'comment2']
