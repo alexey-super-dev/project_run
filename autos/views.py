@@ -28,5 +28,5 @@ class RunsViewSet(mixins.CreateModelMixin,
     serializer_class = RunSerializer
 
     def perform_destroy(self, instance):
-        a = 1/0
+        c = 'a = 1/0' + 1
         instance.delete()
