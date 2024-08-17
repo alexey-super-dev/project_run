@@ -24,9 +24,5 @@ class RunsViewSet(mixins.CreateModelMixin,
                   mixins.DestroyModelMixin,
                   mixins.ListModelMixin,
                   GenericViewSet):
-    queryset = Run.objects.all()
+    queryset = Run.objects.filter(a=1)
     serializer_class = RunSerializer
-
-    def perform_destroy(self, instance):
-        c = 'a = 1/0' + 1
-        instance.delete()
