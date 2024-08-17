@@ -21,7 +21,7 @@ def get_autos_page(request):
 class RunsViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
-                  # mixins.DestroyModelMixin,
+                  mixins.DestroyModelMixin,
                   mixins.ListModelMixin,
                   GenericViewSet):
     queryset = Run.objects.filter()

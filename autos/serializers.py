@@ -4,7 +4,7 @@ from autos.models import Run
 
 
 class RunSerializer(serializers.ModelSerializer):
-    comment2 = serializers.CharField(required=True)
+    comment2 = serializers.CharField(required=True, write_only=True)
 
     class Meta:
         model = Run
