@@ -21,8 +21,8 @@ def get_autos_page(request):
 class RunsViewSet(mixins.CreateModelMixin,
                   mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin,
+                  # mixins.DestroyModelMixin,
                   mixins.ListModelMixin,
                   GenericViewSet):
-    queryset = Run.objects.filter(a=1)
+    queryset = Run.objects.filter()
     serializer_class = RunSerializer
