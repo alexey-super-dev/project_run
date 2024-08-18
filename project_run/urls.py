@@ -27,5 +27,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('autos/', get_autos, name='autos'),
     path('autos_page/', get_autos_page, name='autos_page'),
-    path('', include(router.urls))
+    path('api/', include(router.urls))
 ]
