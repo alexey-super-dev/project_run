@@ -8,5 +8,5 @@ class Autos(models.Model):
 
 class Run(models.Model):
     comment = models.CharField(max_length=250)
-    runner = models.ForeignKey(User, on_delete=models.CASCADE)
+    athlete = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
