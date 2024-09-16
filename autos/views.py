@@ -24,11 +24,7 @@ class RunsViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'], url_path='start')
     def start_run(self, request, pk=None):
-        try:
-            run = self.get_object()  # Получить объект Run по ID из URL
-        except Run.DoesNotExist:
-            return Response({'error': 'Run not found'}, status=status.HTTP_404_NOT_FOUND)
-            # Ваш код для запуска run
+        run = self.get_object()  # Получить объект Run по ID из URL
 
         if run.status == 'in_progress':
             return Response({'status': 'already run'}, status=status.HTTP_400_BAD_REQUEST)
