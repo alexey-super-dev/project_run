@@ -43,7 +43,8 @@ class RunsViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], url_path='stop')
     def stop_run(self, request, pk=None):
         # try:
-        run = self.get_object()  # Получить объект Run по ID из URL
+        # run = self.get_object()  # Получить объект Run по ID из URL
+        run = Run.objects.filter(pk=pk).first()
         # except Run.DoesNotExist:
         #     return Response({'error': 'Run not found'}, status=status.HTTP_404_NOT_FOUND)
 
