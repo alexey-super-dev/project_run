@@ -47,6 +47,9 @@ class RunsViewSet(viewsets.ModelViewSet):
         # if run.status != 'init':
         #     return Response({'status': 'already run'}, status=status.HTTP_400_BAD_REQUEST)
 
+        if run.status != 'in_progress':
+            return Response({'status': 'Run not stopped'}, status=status.HTTP_400_BAD_REQUEST)
+
         run.status = 'finished'
         run.save()
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
