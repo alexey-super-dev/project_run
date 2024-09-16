@@ -29,6 +29,10 @@ class RunsViewSet(viewsets.ModelViewSet):
         except Run.DoesNotExist:
             return Response({'error': 'Run not found'}, status=status.HTTP_404_NOT_FOUND)
             # Ваш код для запуска run
+
+        if run.status != 'init':
+            return Response({'status': 'already run'}, status=status.HTTP_400_BAD_REQUEST)
+
         run.status = 'in_progress'  # Например, метод start() запускает ваш объект
         run.save()
         return Response({'status': 'run started'}, status=status.HTTP_200_OK)
