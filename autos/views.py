@@ -25,7 +25,6 @@ class RunsViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], url_path='start')
     def start_run(self, request, pk=None):
         full_url = request.build_absolute_uri()
-        return Response({'status': full_url}, status=status.HTTP_200_OK)
         run = self.get_object()  # Получить объект Run по ID из URL
 
         if run.status == 'in_progress':
@@ -36,7 +35,7 @@ class RunsViewSet(viewsets.ModelViewSet):
 
         run.status = 'in_progress'  # Например, метод start() запускает ваш объект
         run.save()
-        return Response({'status': 'run started'}, status=status.HTTP_200_OK)
+        return Response({'status': full_url}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['post'], url_path='stop')
     def stop_run(self, request, pk=None):
