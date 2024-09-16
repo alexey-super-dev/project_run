@@ -36,3 +36,17 @@ class RunsViewSet(viewsets.ModelViewSet):
         run.status = 'in_progress'  # Например, метод start() запускает ваш объект
         run.save()
         return Response({'status': 'run started'}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], url_path='stop')
+    def stop_run(self, request, pk=None):
+        try:
+            run = self.get_object()  # Получить объект Run по ID из URL
+        except Run.DoesNotExist:
+            return Response({'error': 'Run not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # if run.status != 'init':
+        #     return Response({'status': 'already run'}, status=status.HTTP_400_BAD_REQUEST)
+
+        run.status = 'sop'
+        run.save()
+        return Response({'status': 'run stoped'}, status=status.HTTP_200_OK)
