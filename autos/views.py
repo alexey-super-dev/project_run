@@ -19,7 +19,7 @@ def get_autos_page(request):
 
 
 class RunsViewSet(viewsets.ModelViewSet):
-    # TODO test
+    # TODO test 2
     queryset = Run.objects.filter()
     serializer_class = RunSerializer
 
