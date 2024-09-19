@@ -18,6 +18,15 @@ def get_autos_page(request):
     return HttpResponse([f'name is {auto.name}\n' for auto in autos])
 
 
+def get_company_details(request):
+    details = {
+        'company_name': 'Run Project',
+        'slogan': 'Run or Die',
+        'contacts': 'You know how to find us'
+    }
+    return JsonResponse(details)
+
+
 class RunsViewSet(viewsets.ModelViewSet):
     # TODO test 2
     queryset = Run.objects.filter()
