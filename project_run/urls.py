@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from autos.views import get_autos, get_autos_page, RunsViewSet
+from autos.views import get_autos, get_autos_page, RunsViewSet, get_company_details
 
 router = DefaultRouter()
 router.register(r'runs', RunsViewSet)
@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('autos/', get_autos, name='autos'),
     path('autos_page/', get_autos_page, name='autos_page'),
-    path('/api/company_details/', get_autos_page, name='company_details'),
+    path('api/company_details/', get_company_details, name='company_details'),
 
     path('api/', include(router.urls))
 ]
