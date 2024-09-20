@@ -65,3 +65,10 @@ class RunsViewSet(viewsets.ModelViewSet):
 class PositionViewSet(viewsets.ModelViewSet):
     queryset = Position.objects.filter()
     serializer_class = PositionSerializer
+
+    def get_queryset(self):
+        queryset = Position.objects.all()
+        run = self.request.query_params.get('run', None)
+        if run:
+            queryset = queryset.filter(run=run)
+        return queryset
