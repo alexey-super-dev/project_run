@@ -20,6 +20,7 @@ class PositionSerializer(serializers.ModelSerializer):
     def validate_latitude(self, value):
         if not (-90 <= int(value) <= 90):
             raise ValidationError(f'Latitude {value} out of range')
+        return value
 
     class Meta:
         model = Position
