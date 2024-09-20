@@ -3,8 +3,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Autos, Run  # Ensure the Autos model is imported
-from .serializers import RunSerializer
+from .models import Autos, Run, Position  # Ensure the Autos model is imported
+from .serializers import RunSerializer, PositionSerializer
 
 
 def get_autos(request):
@@ -60,3 +60,8 @@ class RunsViewSet(viewsets.ModelViewSet):
         run.status = 'finished'
         run.save()
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
+
+
+class PositionViewSet(viewsets.ModelViewSet):
+    queryset = Position.objects.filter()
+    serializer_class = PositionSerializer

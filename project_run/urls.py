@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from autos.views import get_autos, get_autos_page, RunsViewSet, get_company_details
+from autos.views import get_autos, get_autos_page, RunsViewSet, get_company_details, PositionViewSet
 
 router = DefaultRouter()
 router.register(r'runs', RunsViewSet)
+router.register(r'positions', PositionViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
