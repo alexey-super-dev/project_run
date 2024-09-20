@@ -22,6 +22,11 @@ class PositionSerializer(serializers.ModelSerializer):
             raise ValidationError(f'Latitude {value} out of range')
         return value
 
+    def validate_longitude(self, value):
+        if not (-180 <= int(value) <= 180):
+            raise ValidationError(f'Latitude {value} out of range')
+        return value
+
     class Meta:
         model = Position
         fields = ['id', 'run', 'longitude', 'latitude']
