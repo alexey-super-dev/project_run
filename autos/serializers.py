@@ -13,8 +13,8 @@ class RunSerializer(serializers.ModelSerializer):
 class PositionSerializer(serializers.ModelSerializer):
 
     def validate_run(self, value):
-        if not Run.objects.filter(id=value, status='in_progress').exists():
-            raise ValidationError(f'Run {value} not started or already finished')
+        if not Run.objects.filter(id=value.id, status='in_progress').exists():
+            raise ValidationError(f'Run {value.id} not started or already finished')
 
     class Meta:
         model = Position
