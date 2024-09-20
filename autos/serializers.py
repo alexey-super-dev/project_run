@@ -17,6 +17,10 @@ class PositionSerializer(serializers.ModelSerializer):
             raise ValidationError(f'Run {value.id} not started or already finished')
         return value
 
+    def validate_latitude(self, value):
+        if not (-90 <= int(value) <= 90):
+            raise ValidationError(f'Latitude {value} out of range')
+
     class Meta:
         model = Position
         fields = ['id', 'run', 'longitude', 'latitude']
