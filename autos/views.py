@@ -1,4 +1,5 @@
 from django.http import JsonResponse, HttpResponse
+from geopy.distance import geodesic
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -59,6 +60,26 @@ class RunsViewSet(viewsets.ModelViewSet):
 
         run.status = 'finished'
         run.save()
+
+        # Assuming positions_list is your QuerySet:
+        positions_list = Position.objects.filter(run=run).values('latitude', 'longitude')
+
+        # Convert to list of tuples
+        running_routes = [
+            (position['latitude'], position['longitude'])
+            for position in positions_list
+        ]
+
+        total_distance = 0
+        for i in range(len(running_routes) - 1):
+            start = running_routes[i]
+            end = running_routes[i + 1]
+            distance = geodesic(start, end).kilometers
+            total_distance += distance
+
+        run.distance = total_distance
+        run.save()
+
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
 
 
