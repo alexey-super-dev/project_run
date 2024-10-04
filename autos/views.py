@@ -74,7 +74,7 @@ class RunsViewSet(viewsets.ModelViewSet):
         for i in range(len(running_routes) - 1):
             start = running_routes[i]
             end = running_routes[i + 1]
-            distance = geodesic(start, end).kilometers + 0.1
+            distance = geodesic(start, end).kilometers + 0.05
             total_distance += distance
 
         run.distance = total_distance
