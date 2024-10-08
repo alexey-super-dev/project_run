@@ -1,8 +1,9 @@
 from django.http import JsonResponse, HttpResponse
 from geopy.distance import geodesic
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Autos, Run, Position  # Ensure the Autos model is imported
 from .serializers import RunSerializer, PositionSerializer
@@ -29,9 +30,11 @@ def get_company_details(request):
 
 
 class RunsViewSet(viewsets.ModelViewSet):
-    # TODO test 2
-    queryset = Run.objects.filter()
+    queryset = Run.objects.all()
     serializer_class = RunSerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['status']
+    # ordering_fields = ['created_at']
 
     @action(detail=True, methods=['post'], url_path='start')
     def start_run(self, request, pk=None):
