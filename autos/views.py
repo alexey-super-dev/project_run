@@ -34,7 +34,7 @@ class RunsViewSet(viewsets.ModelViewSet):
     serializer_class = RunSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['status']
-    # ordering_fields = ['created_at']
+    ordering_fields = ['created_at']
 
     @action(detail=True, methods=['post'], url_path='start')
     def start_run(self, request, pk=None):
