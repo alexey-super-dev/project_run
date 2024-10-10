@@ -85,6 +85,11 @@ class RunsViewSet(viewsets.ModelViewSet):
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['post'], url_path='bulk_create')
+    def bulk_create(self, request):
+        print(request.data)
+        return Response([1, 2, '3'], status=status.HTTP_200_OK)
+
 
 class PositionViewSet(viewsets.ModelViewSet):
     queryset = Position.objects.filter()
