@@ -88,7 +88,7 @@ class RunsViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='bulk_create')
     def bulk_create(self, request):
         print(request.data)
-        return Response([1, 2, '3'], status=status.HTTP_200_OK)
+        return Response([10000, 2000, '30000'], status=status.HTTP_200_OK)
 
 
 class PositionViewSet(viewsets.ModelViewSet):
