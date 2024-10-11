@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .logic import calculate_run_time_by_id, calculate_run_time
+from .logic import calculate_run_time_by_id, calculate_run_time, calculate_run_time_different_way
 from .models import Autos, Run, Position  # Ensure the Autos model is imported
 from .serializers import RunSerializer, PositionSerializer
 
@@ -83,7 +83,8 @@ class RunsViewSet(viewsets.ModelViewSet):
 
         run.distance = total_distance
         # run.run_time_seconds = calculate_run_time_by_id(run)
-        run.run_time_seconds = calculate_run_time(run)
+        # run.run_time_seconds = calculate_run_time(run)
+        run.run_time_seconds = calculate_run_time_different_way(run)
         run.save()
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)

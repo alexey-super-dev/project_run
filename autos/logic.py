@@ -1,3 +1,4 @@
+from autos.models import Position
 
 
 def calculate_run_time_by_id(run):
@@ -41,3 +42,12 @@ def calculate_run_time(run):
         run_time_seconds = 0  # or handle this case as required
 
     return run_time_seconds
+
+
+def calculate_run_time_different_way(run):
+    positions_qs = Position.objects.filter(run=run.id)
+    positions_quantity = len(positions_qs)
+    positions_qs_sorted_by_date = positions_qs.order_by('date_time')
+
+    run_time = positions_qs_sorted_by_date[positions_quantity - 1].date_time - positions_qs_sorted_by_date[0].date_time
+    return run_time.total_seconds()
