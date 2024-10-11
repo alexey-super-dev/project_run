@@ -19,3 +19,25 @@ def calculate_run_time_by_id(run):
         run_time_seconds = 0  # Handle case with no positions
 
     return run_time_seconds
+
+
+from django.db.models import Min, Max
+
+
+def calculate_run_time(run):
+    from autos.models import Position
+
+    positions = Position.objects.filter(run=run)
+
+    # Get the earliest and latest date_time for the given run
+    date_time_min = positions.aggregate(Min('date_time'))['date_time__min']
+    date_time_max = positions.aggregate(Max('date_time'))['date_time__max']
+
+    if date_time_min and date_time_max:
+        # Calculate the time difference
+        time_difference = date_time_max - date_time_min
+        run_time_seconds = time_difference.total_seconds()
+    else:
+        run_time_seconds = 0  # or handle this case as required
+
+    return run_time_seconds
