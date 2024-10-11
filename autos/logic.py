@@ -50,5 +50,5 @@ def calculate_run_time_different_way(run):
     positions_qs_sorted_by_date = positions_qs.order_by('date_time')
 
     run_time = positions_qs_sorted_by_date[positions_quantity - 1].date_time - positions_qs_sorted_by_date[0].date_time
-    raise Exception(f'{positions_qs_sorted_by_date.values_list('date_time', flat=True)}')
+    raise Exception(f'{list(positions_qs_sorted_by_date.values_list('date_time', flat=True))}')
     return run_time.total_seconds()
