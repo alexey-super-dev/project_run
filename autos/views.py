@@ -81,6 +81,7 @@ class RunsViewSet(viewsets.ModelViewSet):
             total_distance += distance
 
         run.distance = total_distance
+        run.run_time_seconds = 100
         run.save()
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
