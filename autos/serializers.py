@@ -11,7 +11,7 @@ class RunSerializer(serializers.ModelSerializer):
 
 
 class PositionSerializer(serializers.ModelSerializer):
-    date_time = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S.%f")
+    # date_time = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S.%f")
 
     def validate_run(self, value):
         if not Run.objects.filter(id=value.id, status='in_progress').exists():
@@ -30,4 +30,4 @@ class PositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Position
-        fields = ['id', 'run', 'longitude', 'latitude', 'date_time']
+        fields = ['id', 'run', 'longitude', 'latitude']
