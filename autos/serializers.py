@@ -11,6 +11,7 @@ class RunSerializer(serializers.ModelSerializer):
 
 
 class PositionSerializer(serializers.ModelSerializer):
+    date_time = serializers.DateTimeField(format="%Y-%d-%mT%H:%M:%S.%f")
 
     def validate_run(self, value):
         if not Run.objects.filter(id=value.id, status='in_progress').exists():

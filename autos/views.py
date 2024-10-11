@@ -96,8 +96,3 @@ class PositionViewSet(viewsets.ModelViewSet):
         if run:
             queryset = queryset.filter(run=run)
         return queryset
-
-    @action(detail=False, methods=['post'], url_path='bulk_create')
-    def bulk_create(self, request):
-        print(request.data)
-        return Response([10000, 2000, '30000'], status=status.HTTP_200_OK)
