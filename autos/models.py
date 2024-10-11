@@ -12,6 +12,7 @@ class Run(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     status = models.CharField(max_length=50, default='init')
     distance = models.FloatField(null=True)
+    run_time_seconds = models.IntegerField(null=True)
 
 
 class Position(models.Model):
