@@ -115,10 +115,10 @@ class PositionViewSet(viewsets.ModelViewSet):
         distance = geodesic(start, end).meters
         if not distance:
             return
-        raise Exception('go2')
         timing = position.date_time - previous_position.date_time
         time_seconds = timing.total_seconds()
         if time_seconds > 0:
             speed_mps = distance / time_seconds
             position.speed = speed_mps
         position.save()
+        return position
