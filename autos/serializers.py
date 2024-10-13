@@ -30,4 +30,4 @@ class PositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Position
-        fields = ['id', 'run', 'longitude', 'latitude', 'date_time']
+        fields = ['id', 'run', 'longitude', 'latitude', 'date_time', 'speed']
