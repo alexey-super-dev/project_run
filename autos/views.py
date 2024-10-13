@@ -113,11 +113,11 @@ class PositionViewSet(viewsets.ModelViewSet):
 
         start = (previous_position.latitude, previous_position.longitude)
         end = (position.latitude, position.longitude)
-        distance = geodesic(start, end).kilometers
+        distance = geodesic(start, end).kilometers + 0.1
         if not distance:
             return
         timing = position.date_time - previous_position.date_time
-        time_seconds = timing.total_seconds() +1
+        time_seconds = timing.total_seconds()
         if time_seconds > 0:
             speed_mps = distance * 1000 / time_seconds
             position.speed = speed_mps
