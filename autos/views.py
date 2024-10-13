@@ -100,3 +100,19 @@ class PositionViewSet(viewsets.ModelViewSet):
         if run:
             queryset = queryset.filter(run=run)
         return queryset
+
+    def perform_create(self, serializer):
+        position = serializer.save()
+        date_time = position.date_time
+        previous_position = Position.objects.get(run=position.run_id, date_time__lt=date_time)
+        start = (previous_position.latitude, previous_position.longitude)
+        end = (position.latitude, position.longitude)
+        distance = geodesic(start, end).meters
+        if not distance:
+            return
+        timing = position.date_time - previous_position.date_time
+        time_seconds = timing.total_seconds()
+        if time_seconds > 0:
+            speed_mps = distance / time_seconds
+            position.speed = speed_mps
+        position.save()
