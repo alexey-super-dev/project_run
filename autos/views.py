@@ -113,7 +113,7 @@ class PositionViewSet(viewsets.ModelViewSet):
 
         start = (previous_position.latitude, previous_position.longitude)
         end = (position.latitude, position.longitude)
-        distance = geodesic(start, end).kilometers + 0.1
+        distance = geodesic(start, end).kilometers
         if not distance:
             return
         timing = position.date_time - previous_position.date_time
