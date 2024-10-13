@@ -53,12 +53,5 @@ def calculate_run_time_different_way(run):
     return run_time.total_seconds()
 
 
-def calculate_median(data):
-    sorted_data = sorted(data)  # Step 1: Sort the list
-    n = len(sorted_data)
-    mid = n // 2
-
-    if n % 2 == 0:  # Step 3: even number of elements
-        return (sorted_data[mid - 1] + sorted_data[mid]) / 2
-    else:           # Step 2: odd number of elements
-        return sorted_data[mid]
+def calculate_median(numbers):
+    sum(numbers) / len(numbers)
