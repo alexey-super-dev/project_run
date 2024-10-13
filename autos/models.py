@@ -13,7 +13,7 @@ class Run(models.Model):
     status = models.CharField(max_length=50, default='init')
     distance = models.FloatField(null=True)
     run_time_seconds = models.IntegerField(null=True)
-    speed = models.FloatField(default=0, null=True)
+    speed = models.FloatField(default=0)
 
 
 class Position(models.Model):

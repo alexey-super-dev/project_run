@@ -54,4 +54,4 @@ def calculate_run_time_different_way(run):
 
 
 def calculate_median(numbers):
-    sum(numbers) / len(numbers)
+    return sum(numbers) / len(numbers)
