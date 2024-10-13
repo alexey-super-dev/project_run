@@ -117,7 +117,7 @@ class PositionViewSet(viewsets.ModelViewSet):
         if not distance:
             return
         timing = position.date_time - previous_position.date_time
-        time_seconds = timing.total_seconds()
+        time_seconds = timing.total_seconds() +1
         if time_seconds > 0:
             speed_mps = distance * 1000 / time_seconds
             position.speed = speed_mps
