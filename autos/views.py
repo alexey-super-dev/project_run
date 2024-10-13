@@ -120,5 +120,7 @@ class PositionViewSet(viewsets.ModelViewSet):
         if time_seconds > 0:
             speed_mps = distance / time_seconds
             position.speed = speed_mps
+
+        position.distance = distance
         position.save()
         return position
