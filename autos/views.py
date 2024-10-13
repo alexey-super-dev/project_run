@@ -82,7 +82,7 @@ class RunsViewSet(viewsets.ModelViewSet):
             total_distance += distance
 
         run.distance = total_distance
-        run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed')))
+        run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True)))
         # run.run_time_seconds = calculate_run_time_by_id(run)
         run.run_time_seconds = calculate_run_time(run)
         # run.run_time_seconds = calculate_run_time_different_way(run)
