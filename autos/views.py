@@ -103,10 +103,10 @@ class PositionViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         position = serializer.save()
+
         date_time = position.date_time
-        try:
-            previous_position = Position.objects.get(run=position.run_id, date_time__lt=date_time)
-        except Position.DoesNotExist:
+        previous_position = Position.objects.filter(run=position.run_id, date_time__lt=date_time).latest('date_time')
+        if not previous_position:
             return
         start = (previous_position.latitude, previous_position.longitude)
         end = (position.latitude, position.longitude)
