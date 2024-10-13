@@ -106,8 +106,8 @@ class PositionViewSet(viewsets.ModelViewSet):
 
         date_time = position.date_time
         try:
-            previous_position = Position.objects.filter(run_id=position.run_id, date_time__lt=date_time).latest('date_time')
-            # previous_position = Position.objects.filter(run_id=position.run_id).exclude(id=position.id).latest('date_time')
+            # previous_position = Position.objects.filter(run_id=position.run_id, date_time__lt=date_time).latest('date_time')
+            previous_position = Position.objects.filter(run_id=position.run_id).exclude(id=position.id).latest('date_time')
         except Position.DoesNotExist:
             return
 
