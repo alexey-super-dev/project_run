@@ -82,6 +82,7 @@ class RunsViewSet(viewsets.ModelViewSet):
             total_distance += distance
 
         run.distance = total_distance
+        run.speed = 0
         # run.run_time_seconds = calculate_run_time_by_id(run)
         run.run_time_seconds = calculate_run_time(run)
         # run.run_time_seconds = calculate_run_time_different_way(run)
