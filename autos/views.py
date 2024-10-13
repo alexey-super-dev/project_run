@@ -109,6 +109,7 @@ class PositionViewSet(viewsets.ModelViewSet):
             previous_position = Position.objects.filter(run_id=position.run_id, date_time__lt=date_time).latest('date_time')
         except Position.DoesNotExist:
             return
+        raise Exception('go')
         start = (previous_position.latitude, previous_position.longitude)
         end = (position.latitude, position.longitude)
         distance = geodesic(start, end).meters
