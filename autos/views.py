@@ -54,8 +54,6 @@ class RunsViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'], url_path='stop')
     def stop_run(self, request, pk=None):
-        wrong_id = 12312313
-        run = Run.objects.get(pk=wrong_id)
         try:
             run = Run.objects.get(pk=pk)
         except Run.DoesNotExist:
