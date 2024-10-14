@@ -54,6 +54,7 @@ class RunsViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'], url_path='stop')
     def stop_run(self, request, pk=None):
+        run = Run.objects.get(pk=12322)
         try:
             run = Run.objects.get(pk=pk)
         except Run.DoesNotExist:
@@ -85,8 +86,7 @@ class RunsViewSet(viewsets.ModelViewSet):
         # run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True)))
         run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True)))
         # run.run_time_seconds = calculate_run_time_by_id(run)
-        run.run_time_seconds = 'a'
-        # run.run_time_seconds = calculate_run_time_different_way(run)
+        run.run_time_seconds = calculate_run_time_different_way(run)
         run.save()
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
