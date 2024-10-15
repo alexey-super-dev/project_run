@@ -79,7 +79,7 @@ class RunsViewSet(viewsets.ModelViewSet):
             start = running_routes[i]
             end = running_routes[i + 1]
             distance = geodesic(start, end).kilometers
-            total_distance += distance
+            total_distance += distance /0
 
         run.distance = total_distance
         # run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True)))
