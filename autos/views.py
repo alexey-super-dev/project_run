@@ -81,9 +81,9 @@ class RunsViewSet(viewsets.ModelViewSet):
             distance = geodesic(start, end).kilometers
             total_distance += distance
 
-        run.distance = total_distance
+        run.distance = round(total_distance, 2)
         # run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True)))
-        run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True)))
+        run.speed = round(calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True))), 2)
         # run.run_time_seconds = calculate_run_time_by_id(run)
         run.run_time_seconds = calculate_run_time_different_way(run)
         run.save()
@@ -121,8 +121,8 @@ class PositionViewSet(viewsets.ModelViewSet):
         time_seconds = timing.total_seconds()
         if time_seconds > 0:
             speed_mps = distance * 1000 / time_seconds
-            position.speed = speed_mps
+            position.speed = round(speed_mps, 2)
 
-        position.distance = distance
+        position.distance = round(distance, 2)
         position.save()
         return position
