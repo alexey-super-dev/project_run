@@ -124,8 +124,6 @@ class PositionViewSet(viewsets.ModelViewSet):
             speed_mps = distance * 1000 / time_seconds
             position.speed = round(speed_mps, 2)
 
-        position.distance = (round(distance, 2) +
-            Position.objects.filter(run_id=position.run_id,
-                                    date_time__lte=previous_position.date_time).aggregate(dis=Sum('distance')).get('dis', 0))
+        position.distance = round(distance, 2) + previous_position.distance
         position.save()
         return position
