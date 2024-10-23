@@ -2,13 +2,14 @@ from django.db.models import Sum
 from django.http import JsonResponse, HttpResponse
 from geopy.distance import geodesic
 from rest_framework import viewsets, status, filters
+from rest_framework.authtoken.admin import User
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .logic import calculate_run_time_by_id, calculate_run_time, calculate_run_time_different_way, calculate_median
 from .models import Autos, Run, Position  # Ensure the Autos model is imported
-from .serializers import RunSerializer, PositionSerializer
+from .serializers import RunSerializer, PositionSerializer, UserSerializer
 
 
 def get_autos(request):
@@ -127,3 +128,25 @@ class PositionViewSet(viewsets.ModelViewSet):
         position.distance = round(distance, 2) + previous_position.distance
         position.save()
         return position
+
+
+class UsersViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Exclude superusers from the queryset
+        queryset = queryset.filter(is_superuser=False)
+
+        # Get the 'type' query parameter
+        user_type = self.request.query_params.get('type', None)
+
+        # Filter based on 'type' query parameter
+        if user_type == 'coach':
+            queryset = queryset.filter(is_staff=True)
+        elif user_type == 'athlete':
+            queryset = queryset.filter(is_staff=False)
+
+        return queryset
