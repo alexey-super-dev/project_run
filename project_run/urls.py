@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from autos.views import get_autos, get_autos_page, RunsViewSet, get_company_details, PositionViewSet
+from autos.views import get_autos, get_autos_page, RunsViewSet, get_company_details, PositionViewSet, UsersViewSet
 
 router = DefaultRouter()
 router.register(r'users', UsersViewSet)
