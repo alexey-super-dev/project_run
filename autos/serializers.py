@@ -39,7 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'last_name', 'first_name', 'type']
+        fields = ['id', 'username', 'last_name', 'first_name', 'type']
 
     def get_type(self, obj):
         if not obj.is_superuser:  # Ensure superusers are not considered
