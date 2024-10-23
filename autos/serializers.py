@@ -42,9 +42,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'last_name', 'first_name', 'type']
 
     def get_type(self, obj):
-        if not obj.is_superuser:  # Ensure superusers are not considered
-            if obj.is_staff:
-                return 'coach'
-            else:
-                return 'athlete'
-        return None  # Handle the case for superusers if needed (e.g., return None or exclude)
+        # if not obj.is_superuser:  # Ensure superusers are not considered
+        if obj.is_staff:
+            return 'coach'
+        else:
+            return 'athlete'
+        # return None  # Handle the case for superusers if needed (e.g., return None or exclude)
