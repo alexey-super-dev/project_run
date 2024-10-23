@@ -138,7 +138,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         queryset = super().get_queryset()
 
         # Exclude superusers from the queryset
-        queryset = queryset.filter(is_superuser=False)
+        # queryset = queryset.filter(is_superuser=False)
 
         # Get the 'type' query parameter
         user_type = self.request.query_params.get('type', None)
