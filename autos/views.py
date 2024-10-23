@@ -1,8 +1,8 @@
+from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import JsonResponse, HttpResponse
 from geopy.distance import geodesic
 from rest_framework import viewsets, status, filters
-from rest_framework.authtoken.admin import User
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
