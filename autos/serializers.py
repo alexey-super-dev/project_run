@@ -49,4 +49,4 @@ class UserSerializer(serializers.ModelSerializer):
             return 'athlete'
 
     def get_runs_finished(self, obj):
-        return 'a'
+        return 1 / 0
