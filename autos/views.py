@@ -145,7 +145,7 @@ class UsersViewSet(viewsets.ModelViewSet):
 
         # Filter based on 'type' query parameter
         if user_type == 'coach':
-            queryset = queryset.filter(is_staff=False)
+            queryset = queryset.filter(is_staff=True)
         elif user_type == 'athlete':
             queryset = queryset.filter(is_staff=False)
 
