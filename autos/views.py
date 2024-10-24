@@ -131,7 +131,7 @@ class PositionViewSet(viewsets.ModelViewSet):
         return position
 
 
-class UsersViewSet(viewsets.ModelViewSet):
+class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
