@@ -87,8 +87,8 @@ class RunsViewSet(viewsets.ModelViewSet):
         # run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True)))
         if Position.objects.filter(run=run).exists():
             run.speed = round(calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True))), 2)
-        # run.run_time_seconds = calculate_run_time_by_id(run)
-        run.run_time_seconds = calculate_run_time_different_way(run)
+            # run.run_time_seconds = calculate_run_time_by_id(run)
+            run.run_time_seconds = calculate_run_time_different_way(run)
         run.save()
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
