@@ -138,14 +138,14 @@ class UsersViewSet(viewsets.ModelViewSet):
         queryset = super().get_queryset()
 
         # Exclude superusers from the queryset
-        # queryset = queryset.filter(is_superuser=False)
+        queryset = queryset.filter(is_superuser=False)
 
         # Get the 'type' query parameter
         user_type = self.request.query_params.get('type', None)
 
         # Filter based on 'type' query parameter
         if user_type == 'coach':
-            queryset = queryset.filter(is_staff=True)
+            queryset = queryset.filter(is_staff=False)
         elif user_type == 'athlete':
             queryset = queryset.filter(is_staff=False)
 
