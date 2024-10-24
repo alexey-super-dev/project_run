@@ -36,6 +36,7 @@ class PositionSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()  # Add a custom field
+    runs_finished = serializers.SerializerMethodField()  # Add a custom field
 
     class Meta:
         model = User
