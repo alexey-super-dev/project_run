@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import Sum
+from django.db.models import Sum, Count, Q
 from django.http import JsonResponse, HttpResponse
 from geopy.distance import geodesic
 from rest_framework import viewsets, status, filters
@@ -150,4 +150,6 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         elif user_type == 'athlete':
             queryset = queryset.filter(is_staff=False)
 
-        return queryset
+        return queryset.annotate(
+            runs_finished_count=Count('run', filter=Q(run__status='finished'))
+        )
