@@ -150,7 +150,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         elif user_type == 'athlete':
             queryset = queryset.filter(is_staff=False)
 
-        return queryset
-        # return queryset.annotate(
-        #     runs_finished_count=Count('run', filter=Q(run__status='finished'))
-        # )
+        # return queryset
+        return queryset.annotate(
+            runs_finished_count=Count('run', filter=Q(run__status='finished'))
+        )
