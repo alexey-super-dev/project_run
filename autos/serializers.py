@@ -36,8 +36,7 @@ class PositionSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()  # Add a custom field
-    # runs_finished = serializers.SerializerMethodField()  # Add a custom field
-    runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
+    # runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
     runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
 
     class Meta:
@@ -53,5 +52,3 @@ class UserSerializer(serializers.ModelSerializer):
     # def get_runs_finished(self, obj):
     #     return Run.objects.filter(athlete_id=obj.id, status='finished').count()
 
-    def get_runs_in_progress(self, obj):
-        return Run.objects.filter(athlete_id=obj.id, status='in_progress').exists()
