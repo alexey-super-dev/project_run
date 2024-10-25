@@ -152,5 +152,5 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
 
         # return queryset
         return queryset.annotate(
-            runs_finished_count=Count('run', filter=Q(run__status='finished'))
+            runs_finished_count=Count('run', filter=Q(run__status='init'))
         )
