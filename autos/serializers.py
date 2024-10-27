@@ -36,7 +36,8 @@ class PositionSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()  # Add a custom field
-    runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
+    runs_finished = serializers.SerializerMethodField()  # Add a custom field
+    # runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
     # runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
 
     class Meta:
