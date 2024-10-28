@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from autos.views import get_autos, get_autos_page, RunsViewSet, get_company_details, PositionViewSet, UsersViewSet
+from autos.views import get_autos, RunsViewSet, get_company_details, PositionViewSet, UsersViewSet, \
+    subscribe_to_coach_api_url
 
 router = DefaultRouter()
 router.register(r'users', UsersViewSet)
@@ -28,7 +29,7 @@ router.register(r'positions', PositionViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('autos/', get_autos, name='autos'),
-    path('autos_page/', get_autos_page, name='autos_page'),
+    path('api/subscribe_to_coach/<int:id>/', subscribe_to_coach_api_url, name='subscribe_to_coach'),
     path('api/company_details/', get_company_details, name='company_details'),
 
     path('api/', include(router.urls))

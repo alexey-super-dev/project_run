@@ -23,3 +23,8 @@ class Position(models.Model):
     date_time = models.DateTimeField(null=True)
     speed = models.FloatField(default=0)
     distance = models.FloatField(default=0)
+
+
+class AthleteCoachRelation(models.Model):
+    athlete = models.ForeignKey(User, on_delete=models.CASCADE, related_name='athletes')
+    coach = models.OneToOneField(User, on_delete=models.CASCADE)

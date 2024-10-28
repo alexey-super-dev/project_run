@@ -1,14 +1,20 @@
+import json
+
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count, Q
 from django.http import JsonResponse, HttpResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from geopy.distance import geodesic
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .logic import calculate_run_time_by_id, calculate_run_time, calculate_run_time_different_way, calculate_median
-from .models import Autos, Run, Position  # Ensure the Autos model is imported
+from .models import Autos, Run, Position, AthleteCoachRelation  # Ensure the Autos model is imported
 from .serializers import RunSerializer, PositionSerializer, UserSerializer
 
 
@@ -18,9 +24,39 @@ def get_autos(request):
     return JsonResponse([{'name': auto.name} for auto in autos], safe=False)
 
 
-def get_autos_page(request):
-    autos = Autos.objects.all()
-    return HttpResponse([f'name is {auto.name}\n' for auto in autos])
+@csrf_exempt
+@require_POST
+def subscribe_to_coach_api_url(request, id):
+    # Get the coach by ID from the URL
+    coach = get_object_or_404(User, id=id)
+
+    # Ensure the identified user is a coach
+    if not coach.is_staff:
+        return JsonResponse({'status': False, 'error': 'Можно подписываться только на Юзеров с типом Coach'},
+                            status=400)
+
+    try:
+        # Parse the JSON request body
+        data = json.loads(request.body)
+        athlete_id = data.get('athlete')
+
+        # Get the athlete by the ID provided in the body
+        athlete = get_object_or_404(User, id=athlete_id)
+        if athlete.is_staff:
+            return JsonResponse({'status': False, 'error': 'Подписываются могут только Юзеры с типом Athlete'},
+                                status=400)
+
+        AthleteCoachRelation.objects.create(athlete=athlete, coach=coach)
+
+        # Return success response
+        return JsonResponse(
+            {'status': True, 'message': f'{athlete.username} successfully subscribed to {coach.username}'})
+
+    except (json.JSONDecodeError, TypeError, KeyError):
+        return JsonResponse({'status': False, 'error': 'Invalid request format'}, status=400)
+
+    except ValidationError as e:
+        return JsonResponse({'status': False, 'error': str(e)}, status=400)
 
 
 def get_company_details(request):
