@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from autos.models import Run, Position
+from autos.models import Run, Position, AthleteCoachRelation
 
 
 class RunSerializer(serializers.ModelSerializer):
@@ -54,3 +54,19 @@ class UserSerializer(serializers.ModelSerializer):
         # return obj.run_set.filter(status='finished').count()
         return Run.objects.filter(athlete_id=obj.id, status='finished').count()
 
+
+class DetailAthleteSerializer(UserSerializer):
+    coach = serializers.SerializerMethodField()
+
+    def get_coach(self, obj):
+        model = AthleteCoachRelation.objects.filter(athlete_id=obj.id).first()
+        if model:
+            return model.coach_id
+
+
+class DetailCoachSerializer(UserSerializer):
+    athletes = serializers.SerializerMethodField()
+
+    def get_athletes(self, obj):
+        athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
+        return list(athletes)

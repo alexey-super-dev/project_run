@@ -15,7 +15,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .logic import calculate_run_time_by_id, calculate_run_time, calculate_run_time_different_way, calculate_median
 from .models import Autos, Run, Position, AthleteCoachRelation  # Ensure the Autos model is imported
-from .serializers import RunSerializer, PositionSerializer, UserSerializer
+from .serializers import RunSerializer, PositionSerializer, UserSerializer, DetailAthleteSerializer, \
+    DetailCoachSerializer
 
 
 def get_autos(request):
@@ -43,7 +44,7 @@ def subscribe_to_coach_api_url(request, id):
         # Get the athlete by the ID provided in the body
         athlete = User.objects.filter(id=athlete_id).first()
         if not athlete:
-            return JsonResponse({'status': False,}, status=400)
+            return JsonResponse({'status': False, }, status=400)
 
         if athlete.is_staff:
             return JsonResponse({'status': False, 'error': 'Подписываются могут только Юзеры с типом Athlete'},
@@ -175,6 +176,18 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['first_name', 'last_name', 'id']
+
+    def get_serializer_class(self):
+        # Check if this is a detail request by looking at the URL kwargs
+        if self.action == 'retrieve':
+            # Retrieve the user instance to be serialized
+            user = self.get_object()
+            # Choose the serializer based on the user's `is_staff` flag
+            if user.is_staff:
+                return DetailCoachSerializer
+            return DetailAthleteSerializer
+        # Default serializer for list view
+        return UserSerializer
 
     def get_queryset(self):
         queryset = super().get_queryset()
