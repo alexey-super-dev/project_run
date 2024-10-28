@@ -25,6 +25,7 @@ def get_autos(request):
     return JsonResponse([{'name': auto.name} for auto in autos], safe=False)
 
 
+# @csrf_exempt
 def subscribe_to_coach_api_url(request, id):
     if request.method.lower() != 'post':
         return JsonResponse({'status': False, 'error': 'Не верный метод запроса'}, status=405)
