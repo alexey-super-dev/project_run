@@ -63,6 +63,10 @@ class DetailAthleteSerializer(UserSerializer):
         if model:
             return model.coach_id
 
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'last_name', 'first_name', 'type', 'coach']
+
 
 class DetailCoachSerializer(UserSerializer):
     athletes = serializers.SerializerMethodField()
@@ -70,3 +74,7 @@ class DetailCoachSerializer(UserSerializer):
     def get_athletes(self, obj):
         athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
         return list(athletes)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'athletes']
