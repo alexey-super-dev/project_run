@@ -49,6 +49,8 @@ def subscribe_to_coach_api_url(request, id):
         if athlete.is_staff:
             return JsonResponse({'status': False, 'error': 'Подписываются могут только Юзеры с типом Athlete'},
                                 status=400)
+        if AthleteCoachRelation.objects.filter(athlete=athlete, coach=coach).exists():
+            return JsonResponse({'status': False}, status=400)
 
         AthleteCoachRelation.objects.create(athlete=athlete, coach=coach)
 
