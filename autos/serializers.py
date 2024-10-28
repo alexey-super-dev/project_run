@@ -72,7 +72,8 @@ class DetailCoachSerializer(UserSerializer):
     athletes = serializers.SerializerMethodField()
 
     def get_athletes(self, obj):
-        athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
+        # athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
+        athletes = AthleteCoachRelation.objects.filter().values_list('athlete_id', flat=True)
         return list(athletes)
 
     class Meta:
