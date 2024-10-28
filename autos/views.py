@@ -189,7 +189,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
                 return DetailCoachSerializer
             return DetailAthleteSerializer
         # Default serializer for list view
-        return UserSerializer
+        return DetailCoachSerializer
 
     def get_queryset(self):
         queryset = super().get_queryset()
