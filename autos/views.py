@@ -25,7 +25,6 @@ def get_autos(request):
     return JsonResponse([{'name': auto.name} for auto in autos], safe=False)
 
 
-@csrf_exempt
 @require_POST
 def subscribe_to_coach_api_url(request, id):
     # Get the coach by ID from the URL
