@@ -41,7 +41,10 @@ def subscribe_to_coach_api_url(request, id):
         athlete_id = data.get('athlete')
 
         # Get the athlete by the ID provided in the body
-        athlete = get_object_or_404(User, id=athlete_id)
+        athlete = User.objects.filter(id=athlete_id).first()
+        if not athlete:
+            return JsonResponse({'status': False,}, status=400)
+
         if athlete.is_staff:
             return JsonResponse({'status': False, 'error': 'Подписываются могут только Юзеры с типом Athlete'},
                                 status=400)
