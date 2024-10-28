@@ -25,8 +25,10 @@ def get_autos(request):
     return JsonResponse([{'name': auto.name} for auto in autos], safe=False)
 
 
-@require_POST
 def subscribe_to_coach_api_url(request, id):
+    if request.method.lower() != 'post':
+        return JsonResponse({'status': False, 'error': 'Не верный метод запроса'}, status=405)
+
     # Get the coach by ID from the URL
     coach = get_object_or_404(User, id=id)
 
