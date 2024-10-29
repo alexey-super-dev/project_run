@@ -28,6 +28,12 @@ class PositionSerializer(serializers.ModelSerializer):
         fields = ['id', 'run', 'longitude', 'latitude', 'date_time', 'speed', 'distance']
 
 
+class ShortUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'last_name', 'first_name']
+
+
 class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()  # Add a custom field
     runs_finished = serializers.SerializerMethodField()  # Add a custom field
@@ -76,7 +82,7 @@ class DetailCoachSerializer(UserSerializer):
 
 
 class RunSerializer(serializers.ModelSerializer):
-    athlete_data = UserSerializer(read_only=True)
+    athlete_data = UserSerializer(read_only=True, source='athlete')
 
     class Meta:
         model = Run
