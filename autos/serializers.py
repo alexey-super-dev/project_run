@@ -5,12 +5,6 @@ from rest_framework.exceptions import ValidationError
 from autos.models import Run, Position, AthleteCoachRelation
 
 
-class RunSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Run
-        fields = '__all__'
-
-
 class PositionSerializer(serializers.ModelSerializer):
     date_time = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S.%f")
 
@@ -37,6 +31,7 @@ class PositionSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()  # Add a custom field
     runs_finished = serializers.SerializerMethodField()  # Add a custom field
+
     # runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
     # runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
 
@@ -78,3 +73,12 @@ class DetailCoachSerializer(UserSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'athletes']
+
+
+class RunSerializer(serializers.ModelSerializer):
+    athlete_data = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Run
+        fields = ['id', 'comment', 'athlete', 'created_at', 'status', 'distance', 'run_time_seconds', 'speed',
+                  'athlete_data']

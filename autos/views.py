@@ -25,11 +25,7 @@ def get_autos(request):
     return JsonResponse([{'name': auto.name} for auto in autos], safe=False)
 
 
-# @csrf_exempt
 def subscribe_to_coach_api_url(request, id):
-    if request.method.lower() != 'post':
-        return JsonResponse({'status': False, 'error': 'Не верный метод запроса'}, status=405)
-
     # Get the coach by ID from the URL
     coach = get_object_or_404(User, id=id)
 
@@ -41,7 +37,7 @@ def subscribe_to_coach_api_url(request, id):
     try:
         # Parse the JSON request body
         data = json.loads(request.body)
-        athlete_id = data.get('athlete')
+        athlete_id = data.get('athlete', None)
 
         # Get the athlete by the ID provided in the body
         athlete = User.objects.filter(id=athlete_id).first()
@@ -80,6 +76,7 @@ class RunsViewSet(viewsets.ModelViewSet):
     queryset = Run.objects.all()
     serializer_class = RunSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    # filterset_fields = ['status', 'id']
     filterset_fields = ['status']
     ordering_fields = ['created_at']
 
