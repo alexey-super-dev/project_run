@@ -73,7 +73,7 @@ def get_company_details(request):
 
 
 class RunsViewSet(viewsets.ModelViewSet):
-    queryset = Run.objects.all().select_related('athlete')
+    queryset = Run.objects.all()#.select_related('athlete')
     serializer_class = RunSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['status', 'id']
