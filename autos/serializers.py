@@ -82,7 +82,7 @@ class DetailCoachSerializer(UserSerializer):
 
 
 class RunSerializer(serializers.ModelSerializer):
-    athlete_data = UserSerializer(read_only=True, source='athlete')
+    athlete_data = ShortUserSerializer(read_only=True, source='athlete')
 
     class Meta:
         model = Run
