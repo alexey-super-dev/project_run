@@ -133,7 +133,7 @@ class RunsViewSet(viewsets.ModelViewSet):
         run.save()
 
         if Run.objects.filter(athlete=run.athlete_id, status='finished').count() == 10:
-            ChallengeRecord.objects.create(athlete=run.athlete_id, name='RUN_10')
+            ChallengeRecord.objects.create(athlete_id=run.athlete_id, name='RUN_10')
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
 
