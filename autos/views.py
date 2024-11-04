@@ -132,7 +132,7 @@ class RunsViewSet(viewsets.ModelViewSet):
             run.run_time_seconds = calculate_run_time_different_way(run)
         run.save()
 
-        if Run.objects.filter(athlete_id=run.athlete_id, status='finished').count() == 9:
+        if Run.objects.filter(athlete_id=run.athlete_id, status='finished').count() == 8:
         # if Run.objects.filter(athlete_id=run.athlete_id).count() == 10:
             ChallengeRecord.objects.create(athlete_id=run.athlete_id, name='RUN_10')
 
