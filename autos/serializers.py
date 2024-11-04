@@ -98,4 +98,5 @@ class ChallengeRecordSerializer(serializers.ModelSerializer):
         fields = ['athlete', 'name', 'id']
 
     def get_name(self, obj):
+        return 'obj.get_name_display()'
         return obj.get_name_display()
