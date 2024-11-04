@@ -91,6 +91,11 @@ class RunSerializer(serializers.ModelSerializer):
 
 
 class ChallengeRecordSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = ChallengeRecord
-        fields = ['id', 'athlete', 'name']
+        fields = ['athlete', 'name', 'id']
+
+    def get_name(self, obj):
+        return obj.get_name_display()
