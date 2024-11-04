@@ -36,10 +36,10 @@ class ShortUserSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()  # Add a custom field
-    runs_finished = serializers.SerializerMethodField()  # Add a custom field
+    # runs_finished = serializers.SerializerMethodField()  # Add a custom field
 
     # runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
-    # runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
+    runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
 
     class Meta:
         model = User
@@ -51,9 +51,9 @@ class UserSerializer(serializers.ModelSerializer):
         else:
             return 'athlete'
 
-    def get_runs_finished(self, obj):
+    # def get_runs_finished(self, obj):
         # return obj.run_set.filter(status='finished').count()
-        return Run.objects.filter(athlete_id=obj.id, status='finished').count()
+        # return Run.objects.filter(athlete_id=obj.id, status='finished').count()
 
 
 class DetailAthleteSerializer(UserSerializer):
