@@ -31,3 +31,15 @@ class AthleteCoachRelation(models.Model):
 
     class Meta:
         unique_together = ('athlete', 'coach')
+
+
+class ChallengeRecord(models.Model):
+    CHALLENGE_CHOICES = [
+        ('RUN_10', 'Сделай 10 Забегов!')
+    ]
+
+    athlete = models.ForeignKey(User, on_delete=models.CASCADE, related_name='challenges')
+    name = models.CharField(max_length=255, choices=CHALLENGE_CHOICES, default='')
+
+    class Meta:
+        unique_together = ('athlete', 'name')

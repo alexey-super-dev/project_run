@@ -14,9 +14,9 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .logic import calculate_run_time_by_id, calculate_run_time, calculate_run_time_different_way, calculate_median
-from .models import Autos, Run, Position, AthleteCoachRelation  # Ensure the Autos model is imported
+from .models import Autos, Run, Position, AthleteCoachRelation, ChallengeRecord  # Ensure the Autos model is imported
 from .serializers import RunSerializer, PositionSerializer, UserSerializer, DetailAthleteSerializer, \
-    DetailCoachSerializer
+    DetailCoachSerializer, ChallengeRecordSerializer
 
 
 def get_autos(request):
@@ -211,3 +211,8 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # )
 
 
+class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ChallengeRecord.objects.all()
+    serializer_class = ChallengeRecordSerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['athlete', 'name']

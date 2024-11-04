@@ -19,12 +19,13 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from autos.views import get_autos, RunsViewSet, get_company_details, PositionViewSet, UsersViewSet, \
-    subscribe_to_coach_api_url
+    subscribe_to_coach_api_url, ChallengeViewSet
 
 router = DefaultRouter()
 router.register(r'users', UsersViewSet)
 router.register(r'runs', RunsViewSet)
 router.register(r'positions', PositionViewSet)
+router.register(r'challenges', ChallengeViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
