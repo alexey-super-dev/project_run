@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count, Q
 from django.http import JsonResponse, HttpResponse
@@ -130,6 +131,8 @@ class RunsViewSet(viewsets.ModelViewSet):
             run.speed = round(calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True))), 2)
             # run.run_time_seconds = calculate_run_time_by_id(run)
             run.run_time_seconds = calculate_run_time_different_way(run)
+
+        run.comment = settings.CARBON_INTERFACE_API_KEY
         run.save()
 
         if Run.objects.filter(athlete_id=run.athlete_id, status='finished').count() == 10:

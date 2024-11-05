@@ -14,6 +14,7 @@ class Run(models.Model):
     distance = models.FloatField(null=True)
     run_time_seconds = models.IntegerField(null=True)
     speed = models.FloatField(default=0)
+    carbon_emission = models.IntegerField(default=0)
 
 
 class Position(models.Model):
