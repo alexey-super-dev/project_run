@@ -87,7 +87,7 @@ class RunSerializer(serializers.ModelSerializer):
     class Meta:
         model = Run
         fields = ['id', 'comment', 'athlete', 'created_at', 'status', 'distance', 'run_time_seconds', 'speed',
-                  'athlete_data']
+                  'athlete_data', 'carbon_emission']
 
 
 class ChallengeRecordSerializer(serializers.ModelSerializer):
