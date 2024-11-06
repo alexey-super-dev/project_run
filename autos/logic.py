@@ -1,3 +1,5 @@
+import requests
+
 from autos.models import Position
 
 
@@ -55,3 +57,41 @@ def calculate_run_time_different_way(run):
 
 def calculate_median(numbers):
     return sum(numbers) / len(numbers)
+
+
+class CarbonInterfaceError(Exception):
+    pass
+
+
+# Your API key
+def call_carboninterface(key, distance):
+    # Endpoint for estimating vehicle emissions
+    url = 'https://www.carboninterface.com/api/v1/estimates'
+
+    # Headers with API key
+    headers = {
+        'Authorization': f'Bearer {key}',
+        'Content-Type': 'application/json'
+    }
+
+    # Data for the request (example for a vehicle emission estimate)
+    data = {
+        'type': 'vehicle',
+        'distance_unit': 'km',
+        'distance_value': distance,
+        'vehicle_model_id': '7268a9b7-17e8-4c8d-acca-57059252afe9'
+    }
+
+    # Make the POST request
+    response = requests.post(url, headers=headers, json=data)
+
+    # Check the response
+    if response.status_code in [200, 201]:
+        # Parse the JSON response
+        result = response.json()
+        try:
+            return int(result['data']['attributes']['carbon_g'])
+        except (KeyError, ValueError):
+            raise CarbonInterfaceError(str(result))
+    else:
+        raise CarbonInterfaceError
