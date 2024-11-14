@@ -65,10 +65,9 @@ class CarbonInterfaceError(Exception):
 
 # Your API key
 def call_carboninterface(key, distance):
-    # return 123
     # Endpoint for estimating vehicle emissions
-    url = 'https://dog.ceo/api/breeds/image/random'
-    # url = 'https://www.carboninterface.com/api/v1/estimates'
+    # url = 'https://dog.ceo/api/breeds/image/random'
+    url = 'https://www.carboninterface.com/api/v1/estimates'
 
     # Headers with API key
     headers = {
