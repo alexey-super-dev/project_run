@@ -117,5 +117,6 @@ class ChallengeRecordsWithUsersSerializer(serializers.ModelSerializer):
         return_list = []
         for id in ids:
             user = User.objects.filter(id=id).first()
-            return_list.append({'id': id, 'full_name': f'{user.first_name} {user.last_name}'})
+            if user:
+                return_list.append({'id': id, 'full_name': f'{user.first_name} {user.last_name}'})
         return return_list
