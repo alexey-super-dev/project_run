@@ -18,7 +18,7 @@ from .logic import calculate_run_time_by_id, calculate_run_time, calculate_run_t
     call_carboninterface
 from .models import Autos, Run, Position, AthleteCoachRelation, ChallengeRecord  # Ensure the Autos model is imported
 from .serializers import RunSerializer, PositionSerializer, UserSerializer, DetailAthleteSerializer, \
-    DetailCoachSerializer, ChallengeRecordSerializer
+    DetailCoachSerializer, ChallengeRecordSerializer, ChallengeRecordsWithUsersSerializer
 
 
 def get_autos(request):
@@ -229,5 +229,5 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def get_challenges_summary(request):
-    data = ChallengeRecordSerializer(instance=ChallengeRecord.objects.all().last()).data
+    data = ChallengeRecordsWithUsersSerializer(instance=ChallengeRecord.objects.all().last()).data
     return JsonResponse([data], safe=False)
