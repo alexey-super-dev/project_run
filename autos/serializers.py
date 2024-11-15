@@ -99,3 +99,14 @@ class ChallengeRecordSerializer(serializers.ModelSerializer):
 
     def get_full_name(self, obj):
         return obj.get_name_display()
+
+
+class ChallengeRecordsWithUsersSerializer(serializers.ModelSerializer):
+    name_to_display = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ChallengeRecord
+        fields = ['athlete', 'name_to_display', 'id']
+
+    def get_name_to_display(self, obj):
+        return obj.get_name_display()
