@@ -45,3 +45,4 @@ class ChallengeRecord(models.Model):
 
     class Meta:
         unique_together = ('athlete', 'name')
+
