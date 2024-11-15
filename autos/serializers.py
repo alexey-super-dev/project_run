@@ -103,10 +103,14 @@ class ChallengeRecordSerializer(serializers.ModelSerializer):
 
 class ChallengeRecordsWithUsersSerializer(serializers.ModelSerializer):
     name_to_display = serializers.SerializerMethodField()
+    athletes = serializers.SerializerMethodField()
 
     class Meta:
         model = ChallengeRecord
-        fields = ['athlete', 'name_to_display', 'id']
+        fields = ['athletes', 'name_to_display', 'id']
 
     def get_name_to_display(self, obj):
         return obj.get_name_display()
+
+    def get_athletes(self, obj):
+        return list(ChallengeRecord.objects.filter(name=obj.name).values_list('athlete_id', flat=True))
