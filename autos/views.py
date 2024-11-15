@@ -75,11 +75,11 @@ def get_company_details(request):
 
 
 def get_challenges_summary(request):
-    details = {
+    details = [{
         'company_name': 'Run Project',
         'slogan': 'Run or Die',
         'contacts': 'You know how to find us'
-    }
+    }]
     return JsonResponse(details)
 
 
