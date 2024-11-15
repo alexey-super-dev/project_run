@@ -113,7 +113,7 @@ class ChallengeRecordsWithUsersSerializer(serializers.ModelSerializer):
         return obj.get_name_display()
 
     def get_athletes(self, obj):
-        ids = list(ChallengeRecord.objects.filter(name=obj.name).values_list('athlete_id', flat=True))
+        ids = set(list(ChallengeRecord.objects.filter(name=obj.name).values_list('athlete_id', flat=True)))
         return_list = []
         # for id in ids:
         users = User.objects.filter(id__in=ids)

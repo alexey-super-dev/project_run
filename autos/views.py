@@ -129,7 +129,8 @@ class RunsViewSet(viewsets.ModelViewSet):
         run.distance = round(total_distance, 2)
         # run.speed = calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True)))
         if Position.objects.filter(run=run).exists():
-            run.speed = round(calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True))), 2)
+            run.speed = round(calculate_median(list(Position.objects.filter(run=run).values_list('speed', flat=True))),
+                              2)
             # run.run_time_seconds = calculate_run_time_by_id(run)
             run.run_time_seconds = calculate_run_time_different_way(run)
 
@@ -139,7 +140,8 @@ class RunsViewSet(viewsets.ModelViewSet):
         if Run.objects.filter(athlete_id=run.athlete_id, status='finished').count() == 10:
             ChallengeRecord.objects.create(athlete_id=run.athlete_id, name='RUN_10')
 
-        if Run.objects.filter(athlete_id=run.athlete_id, status='finished').aggregate(dis=Sum('distance')).get('dis', None) > 57:
+        if Run.objects.filter(athlete_id=run.athlete_id, status='finished').aggregate(dis=Sum('distance')).get('dis',
+                                                                                                               None) > 57:
             ChallengeRecord.objects.create(athlete_id=run.athlete_id, name='RUN_50')
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
@@ -161,7 +163,8 @@ class PositionViewSet(viewsets.ModelViewSet):
 
         date_time = position.date_time
         try:
-            previous_position = Position.objects.filter(run_id=position.run_id, date_time__lt=date_time).latest('date_time')
+            previous_position = Position.objects.filter(run_id=position.run_id, date_time__lt=date_time).latest(
+                'date_time')
             # previous_position = Position.objects.filter(run_id=position.run_id).exclude(id=position.id).latest('date_time')
         except Position.DoesNotExist:
             return
@@ -229,5 +232,18 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def get_challenges_summary(request):
-    data = ChallengeRecordsWithUsersSerializer(instance=ChallengeRecord.objects.all().distinct(), many=True).data
-    return JsonResponse(data, safe=False)
+    challenge_types = set(ChallengeRecord.objects.all().values_list('name', flat=True))
+    result = []
+    for challenge_type in challenge_types:
+        data = {}
+        data['name_to_display'] = challenge_type
+        data['athletes'] = []
+        users_info = ChallengeRecord.objects.filter(name=challenge_type).select_related('athlete').values('athlete_id',
+                                                                                                          'athlete__first_name',
+                                                                                                          'athlete__last_name')
+        for info in users_info:
+            data['athletes'].append({'full_name': f'{info['athlete__first_name']} {info['athlete__last_name']}',
+                                     'id': info['athlete_id']})
+            result.append(data)
+        return result
+    return JsonResponse(result, safe=False)
