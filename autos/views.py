@@ -74,6 +74,15 @@ def get_company_details(request):
     return JsonResponse(details)
 
 
+def get_challenges_summary(request):
+    details = {
+        'company_name': 'Run Project',
+        'slogan': 'Run or Die',
+        'contacts': 'You know how to find us'
+    }
+    return JsonResponse(details)
+
+
 class RunsViewSet(viewsets.ModelViewSet):
     queryset = Run.objects.all().select_related('athlete')
     serializer_class = RunSerializer

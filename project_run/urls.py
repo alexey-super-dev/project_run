@@ -19,7 +19,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from autos.views import get_autos, RunsViewSet, get_company_details, PositionViewSet, UsersViewSet, \
-    subscribe_to_coach_api_url, ChallengeViewSet
+    subscribe_to_coach_api_url, ChallengeViewSet, get_challenges_summary
 
 router = DefaultRouter()
 router.register(r'users', UsersViewSet)
@@ -32,6 +32,7 @@ urlpatterns = [
     path('autos/', get_autos, name='autos'),
     path('api/subscribe_to_coach/<int:id>/', subscribe_to_coach_api_url, name='subscribe_to_coach'),
     path('api/company_details/', get_company_details, name='company_details'),
+    path('api/challenges_summary/', get_challenges_summary, name='challenges_summary'),
 
     path('api/', include(router.urls))
 ]
