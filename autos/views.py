@@ -232,15 +232,15 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def get_challenges_summary(request):
-    challenge_types = set(ChallengeRecord.objects.all().values_list('name', flat=True))
     result = []
-    for challenge_type in challenge_types:
-        data = {'name_to_display': challenge_type, 'athletes': []}
-        users_info = ChallengeRecord.objects.filter(name=challenge_type).select_related('athlete').values('athlete_id',
+    for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
+        data = {'name_to_display': challenge_type[1], 'athletes': []}
+        users_info = ChallengeRecord.objects.filter(name=challenge_type[0]).select_related('athlete').values('athlete_id',
                                                                                                           'athlete__first_name',
                                                                                                           'athlete__last_name')
         for info in users_info:
             data['athletes'].append({'full_name': f'{info['athlete__first_name']} {info['athlete__last_name']}',
                                      'id': info['athlete_id']})
             result.append(data)
+        # return result
     return JsonResponse(result, safe=False)
