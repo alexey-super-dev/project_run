@@ -145,7 +145,7 @@ class RunsViewSet(viewsets.ModelViewSet):
             ChallengeRecord.objects.create(athlete_id=run.athlete_id, name='RUN_50')
 
         if run.speed > 5 and run.distance > 2:
-            ChallengeRecord.objects.get_or_create(athlete_id=run.athlete_id, name='RUN_50')
+            ChallengeRecord.objects.get_or_create(athlete_id=run.athlete_id, name='RUN_2_10')
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
 
