@@ -241,6 +241,6 @@ def get_challenges_summary(request):
         for info in users_info:
             data['athletes'].append({'full_name': f'{info['athlete__first_name']} {info['athlete__last_name']}',
                                      'id': info['athlete_id']})
-            result.append(data)
+        result.append(data)
         # return result
     return JsonResponse(result, safe=False)
