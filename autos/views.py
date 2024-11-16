@@ -249,20 +249,20 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 #     return JsonResponse(result, safe=False)
 
 
-# def get_challenges_summary(request):
-#     data = ChallengeRecordsWithUsersSerializer(instance=ChallengeRecord.objects.all().distinct('name'), many=True).data
-#     return JsonResponse(data, safe=False)
-
 def get_challenges_summary(request):
-    result = []
-    for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
-        data = {'name_to_display': challenge_type[1], 'athletes': []}
-        ids = set(list(ChallengeRecord.objects.filter(name=challenge_type[0]).values_list('athlete_id', flat=True)))
-        return_list = []
-        users = User.objects.filter(id__in=ids)
-        for user in users:
-            return_list.append({'id': user.id, 'full_name': f'{user.first_name} {user.last_name}'})
-        data['athletes'] = return_list
-        result.append(data)
+    data = ChallengeRecordsWithUsersSerializer(instance=ChallengeRecord.objects.all().distinct('name'), many=True).data
+    return JsonResponse(data, safe=False)
 
-    return JsonResponse(result, safe=False)
+# def get_challenges_summary(request):
+#     result = []
+#     for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
+#         data = {'name_to_display': challenge_type[1], 'athletes': []}
+#         ids = set(list(ChallengeRecord.objects.filter(name=challenge_type[0]).values_list('athlete_id', flat=True)))
+#         return_list = []
+#         users = User.objects.filter(id__in=ids)
+#         for user in users:
+#             return_list.append({'id': user.id, 'full_name': f'{user.first_name} {user.last_name}'})
+#         data['athletes'] = return_list
+#         result.append(data)
+#
+#     return JsonResponse(result, safe=False)
