@@ -234,24 +234,24 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
     filterset_fields = ['athlete', 'name']
 
 
-# def get_challenges_summary(request):
-#     result = []
-#     for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
-#         data = {'name_to_display': challenge_type[1], 'athletes': []}
-#         users_info = ChallengeRecord.objects.filter(name=challenge_type[0]).select_related('athlete').values('athlete_id',
-#                                                                                                           'athlete__first_name',
-#                                                                                                           'athlete__last_name')
-#         for info in users_info:
-#             data['athletes'].append({'full_name': f'{info['athlete__first_name']} {info['athlete__last_name']}',
-#                                      'id': info['athlete_id']})
-#         result.append(data)
-#         # return result # TODO
-#     return JsonResponse(result, safe=False)
-
-
 def get_challenges_summary(request):
-    data = ChallengeRecordsWithUsersSerializer(instance=ChallengeRecord.objects.all().distinct('name'), many=True).data
-    return JsonResponse(data, safe=False)
+    result = []
+    for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
+        data = {'name_to_display': challenge_type[1], 'athletes': []}
+        users_info = ChallengeRecord.objects.filter(name=challenge_type[0]).select_related('athlete').values('athlete_id',
+                                                                                                          'athlete__first_name',
+                                                                                                          'athlete__last_name')
+        for info in users_info:
+            data['athletes'].append({'full_name': f'{info['athlete__first_name']} {info['athlete__last_name']}',
+                                     'id': info['athlete_id']})
+        result.append(data)
+        # return result # TODO
+    return JsonResponse(result, safe=False)
+
+
+# def get_challenges_summary(request):
+#     data = ChallengeRecordsWithUsersSerializer(instance=ChallengeRecord.objects.all().distinct('name'), many=True).data
+#     return JsonResponse(data, safe=False)
 
 # def get_challenges_summary(request):
 #     result = []
