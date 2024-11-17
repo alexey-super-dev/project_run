@@ -250,7 +250,7 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def get_challenges_summary(request): # 10
-    data = ChallengeRecordsWithUsersSerializer(instance=ChallengeRecord.objects.all().distinct('name'), many=True).data
+    data = ChallengeRecordsWithUsersSerializer(instance=ChallengeRecord.objects.all(), many=True).data
     return JsonResponse(data, safe=False)
 
 # def get_challenges_summary(request): # 9
