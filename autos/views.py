@@ -266,21 +266,18 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 #         result.append(data)
 #
 #     return JsonResponse(result, safe=False)
-from django.http import JsonResponse
 
 
 def get_challenges_summary(request):
     result = []
     for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
         data = {'name_to_display': challenge_type[1], 'athletes': []}
-        challenge_ids = challenge_type[0] if isinstance(challenge_type[0], (list, tuple)) else [challenge_type[0]]
+        challenge_records = ChallengeRecord.objects.filter(name=challenge_type[0])
+        users_info = User.objects.filter(challenges__in=challenge_records)
 
-        # Ensure all ids in challenge_ids are of the correct type (e.g., int)
-        challenge_ids = [int(ch_id) for ch_id in challenge_ids if str(ch_id).isdigit()]
-
-        users_info = User.objects.filter(challenges__in=challenge_ids)
         for user in users_info:
             data['athletes'].append({'full_name': f'{user.first_name} {user.last_name}', 'id': user.id})
+
         result.append(data)
 
     return JsonResponse(result, safe=False)
