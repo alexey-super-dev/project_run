@@ -29,6 +29,7 @@ class Position(models.Model):
 class AthleteCoachRelation(models.Model):
     athlete = models.ForeignKey(User, on_delete=models.CASCADE, related_name='athletes')
     coach = models.ForeignKey(User, on_delete=models.CASCADE, related_name='coaches')
+    rate = models.IntegerField(null=True)
 
     class Meta:
         unique_together = ('athlete', 'coach')

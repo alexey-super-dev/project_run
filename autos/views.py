@@ -359,3 +359,38 @@ def get_challenges_summary(request): # 6
 #     result = [value for value in challenges_by_type.values()]
 #
 #     return JsonResponse(result, safe=False)
+
+
+def rate_coach(request, coach_id):
+    # Get the coach by ID from the URL
+    coach = get_object_or_404(User, id=id)
+
+    # Ensure the identified user is a coach
+    if not coach.is_staff:
+        return JsonResponse({'status': False, 'error': 'Можно подписываться только на Юзеров с типом Coach'},
+                            status=400)
+
+        # Parse the JSON request body
+    data = json.loads(request.body)
+    athlete_id = data.get('athlete', None)
+
+    # Get the athlete by the ID provided in the body
+    athlete = User.objects.filter(id=athlete_id).first()
+    if not athlete:
+        return JsonResponse({'status': False, }, status=400)
+
+    if not AthleteCoachRelation.objects.filter(athlete_id=athlete_id, coach=coach).exists():
+        return JsonResponse({'error': 'Для того чтобы ставить рейтинг надо быть подписанным на Coach'}, status=400)
+
+    relation = AthleteCoachRelation.objects.filter(athlete_id=athlete_id, coach=coach).get()
+
+    rating = data.get('rating', None)
+    if not rating or not isinstance(rating, int) or rating < 1 or rating > 5:
+        return JsonResponse({'status': False, }, status=400)
+
+    relation.rate = rating
+    relation.save()
+
+    # Return success response
+    return JsonResponse(
+        {'status': True, 'message': f'{athlete.username} successfully rated {coach.username}'})
