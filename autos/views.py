@@ -267,12 +267,27 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 #
 #     return JsonResponse(result, safe=False)
 
-def get_challenges_summary(request):
+#
+def get_challenges_summary(request): # 6
     result = []
     for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
         data = {'name_to_display': challenge_type[1], 'athletes': []}
-        users_info = User.objects.filter(challenges__name=challenge_type[0])
+        challenge_records = ChallengeRecord.objects.filter(name=challenge_type[0])
+        users_info = User.objects.filter(challenges__in=challenge_records)
+
         for user in users_info:
             data['athletes'].append({'full_name': f'{user.first_name} {user.last_name}', 'id': user.id})
+
         result.append(data)
+
     return JsonResponse(result, safe=False)
+
+# def get_challenges_summary(request): # 6
+#     result = []
+#     for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
+#         data = {'name_to_display': challenge_type[1], 'athletes': []}
+#         users_info = User.objects.filter(challenges__name=challenge_type[0])
+#         for user in users_info:
+#             data['athletes'].append({'full_name': f'{user.first_name} {user.last_name}', 'id': user.id})
+#         result.append(data)
+#     return JsonResponse(result, safe=False)
