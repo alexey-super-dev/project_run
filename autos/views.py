@@ -292,16 +292,51 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 #         result.append(data)
 #     return JsonResponse(result, safe=False)
 
+# from django.http import JsonResponse
+# from django.db.models import Prefetch
+#
+# def get_challenges_summary(request): # 5
+#     # Prefetch related users for all challenge records
+#     challenge_records = ChallengeRecord.objects.prefetch_related(
+#         Prefetch('athlete', queryset=User.objects.only('id', 'first_name', 'last_name'))
+#     ).all()
+#
+#     # Use a dictionary to organize data by challenge type
+#     challenges_by_type = {}
+#     for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
+#         challenges_by_type[challenge_type[0]] = {
+#             'name_to_display': challenge_type[1],
+#             'athletes': []
+#         }
+#
+#     # Populate the athletes for each challenge type
+#     for record in challenge_records:
+#         challenge_type_key = record.name
+#         if challenge_type_key in challenges_by_type:
+#             athlete = record.athlete
+#             challenges_by_type[challenge_type_key]['athletes'].append({
+#                 'full_name': f'{athlete.first_name} {athlete.last_name}',
+#                 'id': athlete.id
+#             })
+#
+#     # Prepare the result list
+#     result = [value for key, value in challenges_by_type.items()]
+#
+#     return JsonResponse(result, safe=False)
+
+
 from django.http import JsonResponse
-from django.db.models import Prefetch
+from django.db.models import Prefetch, F, Value, CharField
+from django.db.models.functions import Concat
 
 def get_challenges_summary(request):
-    # Prefetch related users for all challenge records
-    challenge_records = ChallengeRecord.objects.prefetch_related(
-        Prefetch('athlete', queryset=User.objects.only('id', 'first_name', 'last_name'))
-    ).all()
+    challenge_summary = (
+        ChallengeRecord.objects
+        .select_related('athlete')
+        .values('name', 'athlete__id', 'athlete__first_name', 'athlete__last_name')
+    )
 
-    # Use a dictionary to organize data by challenge type
+    # Prepare a dictionary to gather data
     challenges_by_type = {}
     for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
         challenges_by_type[challenge_type[0]] = {
@@ -309,17 +344,17 @@ def get_challenges_summary(request):
             'athletes': []
         }
 
-    # Populate the athletes for each challenge type
-    for record in challenge_records:
-        challenge_type_key = record.name
+    # Fill in the dictionary with athlete data
+    for entry in challenge_summary:
+        challenge_type_key = entry['name']
         if challenge_type_key in challenges_by_type:
-            athlete = record.athlete
+            athlete_full_name = f"{entry['athlete__first_name']} {entry['athlete__last_name']}"
             challenges_by_type[challenge_type_key]['athletes'].append({
-                'full_name': f'{athlete.first_name} {athlete.last_name}',
-                'id': athlete.id
+                'full_name': athlete_full_name,
+                'id': entry['athlete__id']
             })
 
-    # Prepare the result list
-    result = [value for key, value in challenges_by_type.items()]
+    # Convert the dictionary to a list for the response
+    result = [value for value in challenges_by_type.values()]
 
     return JsonResponse(result, safe=False)
