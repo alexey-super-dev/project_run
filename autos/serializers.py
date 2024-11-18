@@ -91,7 +91,8 @@ class DetailCoachSerializer(UserSerializer):
 
     # #  for aggr in anotate
     def get_rating(self, obj):
-        return float(obj.average_rating)
+        if obj.average_rating:
+            return float(obj.average_rating)
 
     # # 7 for average
     # def get_rating(self, obj):
