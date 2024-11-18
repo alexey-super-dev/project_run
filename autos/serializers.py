@@ -89,10 +89,10 @@ class DetailCoachSerializer(UserSerializer):
         athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
         return list(athletes)
 
-    # #  for aggr in anotate
-    def get_rating(self, obj):
-        if obj.average_rating:
-            return float(obj.average_rating)
+    # 6 for aggr in anotate
+    # def get_rating(self, obj):
+    #     if obj.average_rating:
+    #         return float(obj.average_rating)
 
     # # 7 for average
     # def get_rating(self, obj):
@@ -101,14 +101,14 @@ class DetailCoachSerializer(UserSerializer):
     #         return float(rating)
 
     # 8 for iteration
-    # def get_rating(self, obj):
-    #     rating = None
-    #     if AthleteCoachRelation.objects.filter(coach_id=obj.id, rate__isnull=False).exists():
-    #         ratings = []
-    #         for relation in AthleteCoachRelation.objects.filter(coach_id=obj.id):
-    #             ratings.append(relation.rate)
-    #         return float(calculate_average(ratings))
-    #     return rating
+    def get_rating(self, obj):
+        rating = None
+        if AthleteCoachRelation.objects.filter(coach_id=obj.id, rate__isnull=False).exists():
+            ratings = []
+            for relation in AthleteCoachRelation.objects.filter(coach_id=obj.id):
+                ratings.append(relation.rate)
+            return float(calculate_average(ratings))
+        return rating
 
     class Meta:
         model = User
