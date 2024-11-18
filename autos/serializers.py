@@ -79,7 +79,9 @@ class DetailCoachSerializer(UserSerializer):
         return list(athletes)
 
     def get_rating(self, obj):
-        return float(AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg'])
+        rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
+        if rating is not None:
+            return float(rating)
 
     class Meta:
         model = User
