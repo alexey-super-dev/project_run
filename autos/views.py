@@ -219,6 +219,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         if user_type == 'coach':
             queryset = queryset.filter(is_staff=True)
             queryset = queryset.annotate(average_rating=Avg('studenttocoach_rating'))
+
         elif user_type == 'athlete':
             queryset = queryset.filter(is_staff=False)
 

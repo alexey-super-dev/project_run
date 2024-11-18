@@ -83,7 +83,7 @@ def calculate_average(numbers):
 
 class DetailCoachSerializer(UserSerializer):
     athletes = serializers.SerializerMethodField()
-    rating = serializers.FloatField(source='average_rating', read_only=True)
+    rating = serializers.FloatField(source='average_rating')
 
     def get_athletes(self, obj):
         athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
