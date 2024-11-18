@@ -83,11 +83,15 @@ def calculate_average(numbers):
 
 class DetailCoachSerializer(UserSerializer):
     athletes = serializers.SerializerMethodField()
-    rating = serializers.FloatField(source='average_rating')
+    rating = serializers.SerializerMethodField()
 
     def get_athletes(self, obj):
         athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
         return list(athletes)
+
+    # #  for aggr in anotate
+    def get_rating(self, obj):
+        return float(obj.average_rating)
 
     # # 7 for average
     # def get_rating(self, obj):
