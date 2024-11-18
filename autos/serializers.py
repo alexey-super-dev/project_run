@@ -47,17 +47,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'rating']
 
+    def get_rating(selff, obj):
+        if hasattr(obj, 'average_rating'):
+            if obj.average_rating:
+                return float(obj.average_rating)
+
+    # # 27 for average
     # def get_rating(self, obj):
-    #     if hasattr(obj, 'average_rating'):
-    #         if obj.average_rating:
-    #             return float(obj.average_rating)
-
-
-    # # 7 for average
-    def get_rating(self, obj):
-        rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
-        if rating is not None:
-            return float(rating)
+    #     rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
+    #     if rating is not None:
+    #         return float(rating)
 
     # 18 - 24 - 27 + +  for iteration
     # def get_rating(self, obj):
