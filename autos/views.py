@@ -195,15 +195,11 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ['first_name', 'last_name', 'id']
 
     def get_serializer_class(self):
-        # Check if this is a detail request by looking at the URL kwargs
         if self.action == 'retrieve':
-            # Retrieve the user instance to be serialized
             user = self.get_object()
-            # Choose the serializer based on the user's `is_staff` flag
             if user.is_staff:
                 return DetailCoachSerializer
             return DetailAthleteSerializer
-        # Default serializer for list view
         return UserSerializer
 
     def get_queryset(self):
@@ -215,18 +211,21 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # Get the 'type' query parameter
         user_type = self.request.query_params.get('type', None)
 
-        # Filter based on 'type' query parameter
+        # Annotate runs_finished_count for all users
+        queryset = queryset.annotate(
+            runs_finished_count=Count('run', filter=Q(run__status='finished'))
+        )
+
+        # If filtering for coaches, annotate average_rating
         if user_type == 'coach':
-            queryset = queryset.filter(is_staff=True)
+            queryset = queryset.filter(is_staff=True).annotate(
+                average_rating=Avg('coaches__rate')
+            )
 
         elif user_type == 'athlete':
             queryset = queryset.filter(is_staff=False)
 
-        # return queryset
-        return queryset.annotate(
-            runs_finished_count=Count('run', filter=Q(run__status='finished'))
-            # average_rating=Avg('coaches__rate')
-        )
+        return queryset
 
 
 class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
