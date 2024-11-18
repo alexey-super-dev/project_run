@@ -70,6 +70,17 @@ class DetailAthleteSerializer(UserSerializer):
         fields = ['id', 'username', 'last_name', 'first_name', 'type', 'coach']
 
 
+def calculate_average(numbers):
+    if not numbers:
+        return 0  # Return 0 if the list is empty to avoid division by zero
+
+    total_sum = sum(numbers)  # Calculate the sum of the list
+    count = len(numbers)  # Get the number of elements in the list
+    average = total_sum / count  # Calculate the average
+
+    return average
+
+
 class DetailCoachSerializer(UserSerializer):
     athletes = serializers.SerializerMethodField()
     rating = serializers.SerializerMethodField()
@@ -78,10 +89,20 @@ class DetailCoachSerializer(UserSerializer):
         athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
         return list(athletes)
 
+    # 11 for average
+    # def get_rating(self, obj):
+    #     rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
+    #     if rating is not None:
+    #         return float(rating)
+
     def get_rating(self, obj):
-        rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
-        if rating is not None:
-            return float(rating)
+        rating = None
+        if AthleteCoachRelation.objects.filter(coach_id=obj.id, rating__isnull=False).exists():
+            ratings = []
+            for relation in AthleteCoachRelation.objects.filter(coach_id=obj.id):
+                ratings.append(relation.rate)
+            return float(calculate_average(ratings))
+        return rating
 
     class Meta:
         model = User
