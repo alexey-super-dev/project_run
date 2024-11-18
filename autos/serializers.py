@@ -45,7 +45,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        # fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished']
         fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'rating']
 
     def get_rating(selff, obj):
@@ -53,31 +52,11 @@ class UserSerializer(serializers.ModelSerializer):
             if obj.average_rating:
                 return float(obj.average_rating)
 
-    # # 27 for average
-    # def get_rating(self, obj):
-    #     rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
-    #     if rating is not None:
-    #         return float(rating)
-
-    # 18 - 24 - 27 + +  for iteration
-    # def get_rating(self, obj):
-    #     rating = None
-    #     if AthleteCoachRelation.objects.filter(coach_id=obj.id, rate__isnull=False).exists():
-    #         ratings = []
-    #         for relation in AthleteCoachRelation.objects.filter(coach_id=obj.id):
-    #             ratings.append(relation.rate)
-    #         return float(calculate_average(ratings))
-    #     return rating
-
     def get_type(self, obj):
         if obj.is_staff:
             return 'coach'
         else:
             return 'athlete'
-
-    # def get_runs_finished(self, obj):
-        # return obj.run_set.filter(status='finished').count()
-        # return Run.objects.filter(athlete_id=obj.id, status='finished').count()
 
 
 class DetailAthleteSerializer(UserSerializer):
@@ -111,17 +90,6 @@ class DetailCoachSerializer(UserSerializer):
     def get_athletes(self, obj):
         athletes = AthleteCoachRelation.objects.filter(coach_id=obj.id).values_list('athlete_id', flat=True)
         return list(athletes)
-
-    # 6 for aggr in anotate
-    # def get_rating(self, obj):
-    #     if obj.average_rating:
-    #         return float(obj.average_rating)
-
-    # # 7 for average
-    # def get_rating(self, obj):
-    #     rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
-    #     if rating is not None:
-    #         return float(rating)
 
     # 8 for iteration
     def get_rating(self, obj):

@@ -29,7 +29,6 @@ router.register(r'challenges', ChallengeViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('autos/', get_autos, name='autos'),
     path('api/subscribe_to_coach/<int:id>/', subscribe_to_coach_api_url, name='subscribe_to_coach'),
     path('api/company_details/', get_company_details, name='company_details'),
     path('api/challenges_summary/', get_challenges_summary, name='challenges_summary'),
