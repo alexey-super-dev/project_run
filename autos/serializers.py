@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -78,7 +79,7 @@ class DetailCoachSerializer(UserSerializer):
         return list(athletes)
 
     def get_rating(self, obj):
-        return float(1)
+        return float(AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rating'))['avg'])
 
     class Meta:
         model = User
