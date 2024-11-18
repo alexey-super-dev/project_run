@@ -2,7 +2,7 @@ import json
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Count, Q, Avg
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -218,6 +218,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # Filter based on 'type' query parameter
         if user_type == 'coach':
             queryset = queryset.filter(is_staff=True)
+            queryset = queryset.annotate(average_rating=Avg('studenttocoach_rating'))
         elif user_type == 'athlete':
             queryset = queryset.filter(is_staff=False)
 
