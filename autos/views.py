@@ -365,12 +365,7 @@ def rate_coach(request, coach_id):
     # Get the coach by ID from the URL
     coach = get_object_or_404(User, id=coach_id)
 
-    # Ensure the identified user is a coach
-    if not coach.is_staff:
-        return JsonResponse({'status': False, 'error': 'Можно подписываться только на Юзеров с типом Coach'},
-                            status=400)
-
-        # Parse the JSON request body
+    # Parse the JSON request body
     data = json.loads(request.body)
     athlete_id = data.get('athlete', None)
 
