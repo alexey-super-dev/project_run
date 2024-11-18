@@ -218,14 +218,14 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
         # Filter based on 'type' query parameter
         if user_type == 'coach':
             queryset = queryset.filter(is_staff=True)
-            queryset = queryset.annotate(average_rating=Avg('studenttocoach_rating'))
 
         elif user_type == 'athlete':
             queryset = queryset.filter(is_staff=False)
 
         # return queryset
         return queryset.annotate(
-            runs_finished_count=Count('run', filter=Q(run__status='finished'))
+            runs_finished_count=Count('run', filter=Q(run__status='finished')),
+            average_rating=Avg('coaches__rating')
         )
 
 
