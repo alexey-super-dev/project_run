@@ -363,7 +363,7 @@ def get_challenges_summary(request): # 6
 
 def rate_coach(request, coach_id):
     # Get the coach by ID from the URL
-    coach = get_object_or_404(User, id=id)
+    coach = get_object_or_404(User, id=coach_id)
 
     # Ensure the identified user is a coach
     if not coach.is_staff:
