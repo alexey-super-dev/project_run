@@ -52,26 +52,22 @@ class UserSerializer(serializers.ModelSerializer):
     #         if obj.average_rating:
     #             return float(obj.average_rating)
 
-    # 6 for aggr in anotate
-    # def get_rating(self, obj):
-    #     if obj.average_rating:
-    #         return float(obj.average_rating)
 
     # # 7 for average
-    # def get_rating(self, obj):
-    #     rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
-    #     if rating is not None:
-    #         return float(rating)
-
-    # 8 for iteration
     def get_rating(self, obj):
-        rating = None
-        if AthleteCoachRelation.objects.filter(coach_id=obj.id, rate__isnull=False).exists():
-            ratings = []
-            for relation in AthleteCoachRelation.objects.filter(coach_id=obj.id):
-                ratings.append(relation.rate)
-            return float(calculate_average(ratings))
-        return rating
+        rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
+        if rating is not None:
+            return float(rating)
+
+    # 18 - 24 - 27 + +  for iteration
+    # def get_rating(self, obj):
+    #     rating = None
+    #     if AthleteCoachRelation.objects.filter(coach_id=obj.id, rate__isnull=False).exists():
+    #         ratings = []
+    #         for relation in AthleteCoachRelation.objects.filter(coach_id=obj.id):
+    #             ratings.append(relation.rate)
+    #         return float(calculate_average(ratings))
+    #     return rating
 
     def get_type(self, obj):
         if obj.is_staff:
