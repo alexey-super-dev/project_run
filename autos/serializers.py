@@ -97,7 +97,7 @@ class DetailCoachSerializer(UserSerializer):
 
     def get_rating(self, obj):
         rating = None
-        if AthleteCoachRelation.objects.filter(coach_id=obj.id, rating__isnull=False).exists():
+        if AthleteCoachRelation.objects.filter(coach_id=obj.id, rate__isnull=False).exists():
             ratings = []
             for relation in AthleteCoachRelation.objects.filter(coach_id=obj.id):
                 ratings.append(relation.rate)
