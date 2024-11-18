@@ -48,8 +48,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'rating']
 
     def get_rating(self, obj):
-        if obj.average_rating:
-            return float(obj.average_rating)
+        if hasattr(obj, 'average_rating'):
+            if obj.average_rating:
+                return float(obj.average_rating)
 
     def get_type(self, obj):
         if obj.is_staff:
