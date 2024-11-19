@@ -141,10 +141,10 @@ class RunsViewSet(viewsets.ModelViewSet):
             ChallengeRecord.objects.create(athlete_id=run.athlete_id, name='RUN_10')
 
         if Run.objects.filter(athlete_id=run.athlete_id, status='finished').aggregate(dis=Sum('distance')).get('dis',
-                                                                                                               None) > 57:
+                                                                                                               None) > 50:
             ChallengeRecord.objects.create(athlete_id=run.athlete_id, name='RUN_50')
 
-        if run.run_time_seconds <= 700 and run.distance >= 2:
+        if run.run_time_seconds <= 600 and run.distance >= 2:
             ChallengeRecord.objects.get_or_create(athlete_id=run.athlete_id, name='RUN_2_10')
 
         return Response({'status': 'run stopped'}, status=status.HTTP_200_OK)
