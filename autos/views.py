@@ -400,7 +400,7 @@ def analytics_for_coach(request, coach_id):
         {'longest_run_user': 1,
          'longest_run_value': 1.2,
          'total_run_user': 3,
-         'total_run_value': 3,
+         'total_run_value': 3.1,
          'speed_avg_user': 4,
          'speed_avg_value': 5.5
          }
