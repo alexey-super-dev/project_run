@@ -2,7 +2,9 @@ import json
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.db.models import Sum, Count, Q, Avg
+from django.db.models import Max, Sum, Avg, F
+
+from django.db.models import Sum, Count, Q, Avg, Max
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -396,12 +398,41 @@ def rate_coach(request, coach_id):
 def analytics_for_coach(request, coach_id):
     # Get the coach by ID from the URL
     coach = get_object_or_404(User, id=coach_id)
+    athlete_ids = AthleteCoachRelation.objects.filter(coach=coach).values_list('athlete_id', flat=True)
+
+    # Find the athlete with the maximum distance
+    max_distance_run = (
+        Run.objects.filter(athlete__id__in=athlete_ids)
+        .annotate(max_distance=Max('distance'))
+        .order_by('-max_distance')
+        .values('athlete_id', 'max_distance')
+        .first()
+    )
+
+    # Find the athlete with the maximum sum of distances
+    max_sum_distance_run = (
+        Run.objects.filter(athlete__id__in=athlete_ids)
+        .annotate(sum_distance=Sum('distance'))
+        .order_by('-sum_distance')
+        .values('athlete_id', 'sum_distance')
+        .first()
+    )
+
+    # Find the athlete with the maximum average speed
+    max_avg_speed_run = (
+        Run.objects.filter(athlete__id__in=athlete_ids)
+        .annotate(avg_speed=Avg('speed'))
+        .order_by('-avg_speed')
+        .values('athlete_id', 'avg_speed')
+        .first()
+    )
+
     return JsonResponse(
-        [{'longest_run_user': 1,
-         'longest_run_value': 1.2,
-         'total_run_user': 3,
-         'total_run_value': 3.1,
-         'speed_avg_user': 4,
-         'speed_avg_value': 5.5
-         }], safe=False
+        {'longest_run_user': max_distance_run['athlete_id'],
+         'longest_run_value': max_distance_run['max_distance'],
+         'total_run_user': max_sum_distance_run['athlete_id'],
+         'total_run_value': max_sum_distance_run['sum_distance'],
+         'speed_avg_user': max_avg_speed_run['athlete_id'],
+         'speed_avg_value': max_avg_speed_run['avg_speed']
+         }
     )
