@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/company_details/', get_company_details, name='company_details'),
     path('api/challenges_summary/', get_challenges_summary, name='challenges_summary'),
     path('api/rate_coach/<int:coach_id>/', rate_coach, name='rate_coach'),
+    path('api/analytics_for_coach/<int:coach_id>/', analytics_for_coach, name='analytics_for_coach'),
 
     path('api/', include(router.urls))
 ]

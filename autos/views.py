@@ -283,7 +283,7 @@ class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):
 #
 #     return JsonResponse(result, safe=False)
 
-def get_challenges_summary(request): # 6
+def get_challenges_summary(request):  # 6
     result = []
     for challenge_type in ChallengeRecord.CHALLENGE_CHOICES:
         data = {'name_to_display': challenge_type[1], 'athletes': []}
@@ -292,6 +292,7 @@ def get_challenges_summary(request): # 6
             data['athletes'].append({'full_name': f'{user.first_name} {user.last_name}', 'id': user.id})
         result.append(data)
     return JsonResponse(result, safe=False)
+
 
 # from django.http import JsonResponse
 # from django.db.models import Prefetch
@@ -390,3 +391,17 @@ def rate_coach(request, coach_id):
     # Return success response
     return JsonResponse(
         {'status': True, 'message': f'{athlete.username} successfully rated {coach.username}'})
+
+
+def analytics_for_coach(request, coach_id):
+    # Get the coach by ID from the URL
+    coach = get_object_or_404(User, id=coach_id)
+    return JsonResponse(
+        {'longest_run_user': 1,
+         'longest_run_value': 1.2,
+         'total_run_user': 3,
+         'total_run_value': 3,
+         'speed_avg_user': 4,
+         'speed_avg_value': 5.5
+         }
+    )
