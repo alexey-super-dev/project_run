@@ -499,71 +499,71 @@ def analytics_for_coach(request, coach_id):
     )
 
 
-# 13
-def analytics_for_coach(request, coach_id):
-    # Get the coach by ID from the URL
-    coach = get_object_or_404(User, id=coach_id)
-    athlete_ids = list(AthleteCoachRelation.objects.filter(coach=coach).values_list('athlete_id', flat=True))
-
-    # Initialize variables to keep track of the maximum values and corresponding athlete IDs
-    max_distance = 0
-    max_distance_athlete = None
-
-    max_sum_distance = 0
-    max_sum_distance_athlete = None
-
-    max_avg_speed = 0
-    max_avg_speed_athlete = None
-
-    # Iterate over each athlete ID and calculate the metrics
-    for athlete_id in athlete_ids:
-        # Get all runs for this athlete
-        runs = list(Run.objects.filter(athlete_id=athlete_id))
-
-        # Calculate the maximum single run distance for this athlete
-        athlete_max_distance = 0
-        for run in runs:
-            if run.distance > athlete_max_distance:
-                athlete_max_distance = run.distance
-
-        # Calculate the sum of all run distances for this athlete
-        athlete_sum_distance = 0
-        for run in runs:
-            athlete_sum_distance += run.distance
-
-        # Calculate the average speed for this athlete
-        total_speed = 0
-        count = 0
-        for run in runs:
-            total_speed += run.speed
-            count += 1
-        athlete_avg_speed = total_speed / count if count > 0 else 0
-
-        # Update max distance if this athlete has a longer run
-        if athlete_max_distance > max_distance:
-            max_distance = athlete_max_distance
-            max_distance_athlete = athlete_id
-
-        # Update max sum distance if this athlete has a greater total run distance
-        if athlete_sum_distance > max_sum_distance:
-            max_sum_distance = athlete_sum_distance
-            max_sum_distance_athlete = athlete_id
-
-        # Update max average speed if this athlete has a higher average speed
-        if athlete_avg_speed > max_avg_speed:
-            max_avg_speed = athlete_avg_speed
-            max_avg_speed_athlete = athlete_id
-
-    return JsonResponse(
-        {
-            'longest_run_user': max_distance_athlete,
-            'longest_run_value': max_distance,
-            'total_run_user': max_sum_distance_athlete,
-            'total_run_value': max_sum_distance,
-            'speed_avg_user': max_avg_speed_athlete,
-            'speed_avg_value': max_avg_speed,
-        }
-    )
+# 13 / 11
+# def analytics_for_coach(request, coach_id):
+#     # Get the coach by ID from the URL
+#     coach = get_object_or_404(User, id=coach_id)
+#     athlete_ids = list(AthleteCoachRelation.objects.filter(coach=coach).values_list('athlete_id', flat=True))
+#
+#     # Initialize variables to keep track of the maximum values and corresponding athlete IDs
+#     max_distance = 0
+#     max_distance_athlete = None
+#
+#     max_sum_distance = 0
+#     max_sum_distance_athlete = None
+#
+#     max_avg_speed = 0
+#     max_avg_speed_athlete = None
+#
+#     # Iterate over each athlete ID and calculate the metrics
+#     for athlete_id in athlete_ids:
+#         # Get all runs for this athlete
+#         runs = list(Run.objects.filter(athlete_id=athlete_id))
+#
+#         # Calculate the maximum single run distance for this athlete
+#         athlete_max_distance = 0
+#         for run in runs:
+#             if run.distance > athlete_max_distance:
+#                 athlete_max_distance = run.distance
+#
+#         # Calculate the sum of all run distances for this athlete
+#         athlete_sum_distance = 0
+#         for run in runs:
+#             athlete_sum_distance += run.distance
+#
+#         # Calculate the average speed for this athlete
+#         total_speed = 0
+#         count = 0
+#         for run in runs:
+#             total_speed += run.speed
+#             count += 1
+#         athlete_avg_speed = total_speed / count if count > 0 else 0
+#
+#         # Update max distance if this athlete has a longer run
+#         if athlete_max_distance > max_distance:
+#             max_distance = athlete_max_distance
+#             max_distance_athlete = athlete_id
+#
+#         # Update max sum distance if this athlete has a greater total run distance
+#         if athlete_sum_distance > max_sum_distance:
+#             max_sum_distance = athlete_sum_distance
+#             max_sum_distance_athlete = athlete_id
+#
+#         # Update max average speed if this athlete has a higher average speed
+#         if athlete_avg_speed > max_avg_speed:
+#             max_avg_speed = athlete_avg_speed
+#             max_avg_speed_athlete = athlete_id
+#
+#     return JsonResponse(
+#         {
+#             'longest_run_user': max_distance_athlete,
+#             'longest_run_value': max_distance,
+#             'total_run_user': max_sum_distance_athlete,
+#             'total_run_value': max_sum_distance,
+#             'speed_avg_user': max_avg_speed_athlete,
+#             'speed_avg_value': max_avg_speed,
+#         }
+#     )
 
 
 
