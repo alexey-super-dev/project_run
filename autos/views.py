@@ -4,6 +4,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Max, Sum, Avg, F
 
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.db.models import Max, Sum, Avg
 from django.db.models import Sum, Count, Q, Avg, Max
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
@@ -563,76 +566,73 @@ def analytics_for_coach(request, coach_id):
     )
 
 
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from django.db.models import Max, Sum, Avg
 
-
-def analytics_for_coach(request, coach_id):
-    # Get the coach by ID from the URL
-    coach = get_object_or_404(User, id=coach_id)
-
-    # Fetch all athlete relations for the coach
-    athlete_relations = AthleteCoachRelation.objects.filter(coach=coach)
-
-    # Initialize variables to keep track of the maximum values and corresponding athlete IDs
-    max_distance = 0
-    max_distance_athlete = None
-
-    max_sum_distance = 0
-    max_sum_distance_athlete = None
-
-    max_avg_speed = 0
-    max_avg_speed_athlete = None
-
-    # Iterate over each athlete relation
-    for relation in athlete_relations:
-        athlete_id = relation.athlete_id
-
-        # **Redundant Query 1:** Fetch athlete object (not needed for computations)
-        athlete = get_object_or_404(User, id=athlete_id)
-
-        # **Redundant Query 2:** Fetch all runs for the athlete
-        runs = Run.objects.filter(athlete_id=athlete_id)
-
-        # **Redundant Query 3:** Calculate maximum distance for the athlete
-        athlete_max_distance = runs.aggregate(Max('distance'))['distance__max'] or 0
-
-        # **Redundant Query 4:** Calculate sum of distances for the athlete
-        athlete_sum_distance = runs.aggregate(Sum('distance'))['distance__sum'] or 0
-
-        # **Redundant Query 5:** Calculate average speed for the athlete
-        athlete_avg_speed = runs.aggregate(Avg('speed'))['speed__avg'] or 0
-
-        # **Unnecessary Loop:** Iterate over runs again to simulate extra processing
-        for run in runs:
-            # **Redundant Query 6:** Fetch each run individually (loops causing N queries)
-            single_run = Run.objects.get(id=run.id)
-            # Simulate some processing (no-op)
-            _ = single_run.distance
-
-        # Update max distance if this athlete has a longer run
-        if athlete_max_distance > max_distance:
-            max_distance = athlete_max_distance
-            max_distance_athlete = athlete_id
-
-        # Update max sum distance if this athlete has a greater total run distance
-        if athlete_sum_distance > max_sum_distance:
-            max_sum_distance = athlete_sum_distance
-            max_sum_distance_athlete = athlete_id
-
-        # Update max average speed if this athlete has a higher average speed
-        if athlete_avg_speed > max_avg_speed:
-            max_avg_speed = athlete_avg_speed
-            max_avg_speed_athlete = athlete_id
-
-    return JsonResponse(
-        {
-            'longest_run_user': max_distance_athlete,
-            'longest_run_value': max_distance,
-            'total_run_user': max_sum_distance_athlete,
-            'total_run_value': max_sum_distance,
-            'speed_avg_user': max_avg_speed_athlete,
-            'speed_avg_value': max_avg_speed,
-        }
-    )
+# 53
+# def analytics_for_coach(request, coach_id):
+#     # Get the coach by ID from the URL
+#     coach = get_object_or_404(User, id=coach_id)
+#
+#     # Fetch all athlete relations for the coach
+#     athlete_relations = AthleteCoachRelation.objects.filter(coach=coach)
+#
+#     # Initialize variables to keep track of the maximum values and corresponding athlete IDs
+#     max_distance = 0
+#     max_distance_athlete = None
+#
+#     max_sum_distance = 0
+#     max_sum_distance_athlete = None
+#
+#     max_avg_speed = 0
+#     max_avg_speed_athlete = None
+#
+#     # Iterate over each athlete relation
+#     for relation in athlete_relations:
+#         athlete_id = relation.athlete_id
+#
+#         # **Redundant Query 1:** Fetch athlete object (not needed for computations)
+#         athlete = get_object_or_404(User, id=athlete_id)
+#
+#         # **Redundant Query 2:** Fetch all runs for the athlete
+#         runs = Run.objects.filter(athlete_id=athlete_id)
+#
+#         # **Redundant Query 3:** Calculate maximum distance for the athlete
+#         athlete_max_distance = runs.aggregate(Max('distance'))['distance__max'] or 0
+#
+#         # **Redundant Query 4:** Calculate sum of distances for the athlete
+#         athlete_sum_distance = runs.aggregate(Sum('distance'))['distance__sum'] or 0
+#
+#         # **Redundant Query 5:** Calculate average speed for the athlete
+#         athlete_avg_speed = runs.aggregate(Avg('speed'))['speed__avg'] or 0
+#
+#         # **Unnecessary Loop:** Iterate over runs again to simulate extra processing
+#         for run in runs:
+#             # **Redundant Query 6:** Fetch each run individually (loops causing N queries)
+#             single_run = Run.objects.get(id=run.id)
+#             # Simulate some processing (no-op)
+#             _ = single_run.distance
+#
+#         # Update max distance if this athlete has a longer run
+#         if athlete_max_distance > max_distance:
+#             max_distance = athlete_max_distance
+#             max_distance_athlete = athlete_id
+#
+#         # Update max sum distance if this athlete has a greater total run distance
+#         if athlete_sum_distance > max_sum_distance:
+#             max_sum_distance = athlete_sum_distance
+#             max_sum_distance_athlete = athlete_id
+#
+#         # Update max average speed if this athlete has a higher average speed
+#         if athlete_avg_speed > max_avg_speed:
+#             max_avg_speed = athlete_avg_speed
+#             max_avg_speed_athlete = athlete_id
+#
+#     return JsonResponse(
+#         {
+#             'longest_run_user': max_distance_athlete,
+#             'longest_run_value': max_distance,
+#             'total_run_user': max_sum_distance_athlete,
+#             'total_run_value': max_sum_distance,
+#             'speed_avg_user': max_avg_speed_athlete,
+#             'speed_avg_value': max_avg_speed,
+#         }
+#     )
