@@ -395,6 +395,7 @@ def rate_coach(request, coach_id):
         {'status': True, 'message': f'{athlete.username} successfully rated {coach.username}'})
 
 
+# 7
 def analytics_for_coach(request, coach_id):
     # Get the coach by ID from the URL
     coach = get_object_or_404(User, id=coach_id)
@@ -421,6 +422,7 @@ def analytics_for_coach(request, coach_id):
     # Find the athlete with the maximum average speed
     max_avg_speed_run = (
         Run.objects.filter(athlete__id__in=athlete_ids)
+        .values('athlete_id')
         .annotate(avg_speed=Avg('speed'))
         .order_by('-avg_speed')
         .values('athlete_id', 'avg_speed')
@@ -437,7 +439,7 @@ def analytics_for_coach(request, coach_id):
          }
     )
 
-
+# 23
 # def analytics_for_coach(request, coach_id):
 #     # Get the coach by ID from the URL
 #     coach = get_object_or_404(User, id=coach_id)
