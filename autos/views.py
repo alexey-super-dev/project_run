@@ -398,49 +398,111 @@ def rate_coach(request, coach_id):
         {'status': True, 'message': f'{athlete.username} successfully rated {coach.username}'})
 
 
-# 7
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.db.models import Max, Sum, Avg, Subquery, OuterRef
+
+
 def analytics_for_coach(request, coach_id):
-    # Get the coach by ID from the URL
+    # Step 1: Retrieve the coach object or return 404
     coach = get_object_or_404(User, id=coach_id)
+
+    # Step 2: Retrieve all athlete IDs associated with the coach in a single query
     athlete_ids = AthleteCoachRelation.objects.filter(coach=coach).values_list('athlete_id', flat=True)
 
-    # Find the athlete with the maximum distance
-    max_distance_run = (
-        Run.objects.filter(athlete__id__in=athlete_ids)
-        .annotate(max_distance=Max('distance'))
-        .order_by('-max_distance')
-        .values('athlete_id', 'max_distance')
-        .first()
+    if not athlete_ids.exists():
+        # If no athletes are related to the coach, return default values
+        return JsonResponse({
+            'longest_run_user': None,
+            'longest_run_value': 0,
+            'total_run_user': None,
+            'total_run_value': 0,
+            'speed_avg_user': None,
+            'speed_avg_value': 0,
+        })
+
+    # Step 3: Annotate each athlete with required aggregates
+    athletes_with_stats = Run.objects.filter(athlete_id__in=athlete_ids).values('athlete_id').annotate(
+        max_distance=Max('distance'),
+        sum_distance=Sum('distance'),
+        avg_speed=Avg('speed')
     )
 
-    max_sum_distance_run = (
-        Run.objects.filter(athlete__id__in=athlete_ids)
-        .values('athlete_id')
-        .annotate(sum_distance=Sum('distance'))
-        .order_by('-sum_distance')
-        .values('athlete_id', 'sum_distance')
-        .first()
-    )
+    # Convert QuerySet to list for efficient processing
+    athletes_stats = list(athletes_with_stats)
 
-    # Find the athlete with the maximum average speed
-    max_avg_speed_run = (
-        Run.objects.filter(athlete__id__in=athlete_ids)
-        .values('athlete_id')
-        .annotate(avg_speed=Avg('speed'))
-        .order_by('-avg_speed')
-        .values('athlete_id', 'avg_speed')
-        .first()
-    )
+    if not athletes_stats:
+        # If athletes have no runs, return default values
+        return JsonResponse({
+            'longest_run_user': None,
+            'longest_run_value': 0,
+            'total_run_user': None,
+            'total_run_value': 0,
+            'speed_avg_user': None,
+            'speed_avg_value': 0,
+        })
 
-    return JsonResponse(
-        {'longest_run_user': max_distance_run['athlete_id'],
-         'longest_run_value': max_distance_run['max_distance'],
-         'total_run_user': max_sum_distance_run['athlete_id'],
-         'total_run_value': max_sum_distance_run['sum_distance'],
-         'speed_avg_user': max_avg_speed_run['athlete_id'],
-         'speed_avg_value': max_avg_speed_run['avg_speed']
-         }
-    )
+    # Step 4: Determine the required analytics
+    longest_run = max(athletes_stats, key=lambda x: x['max_distance'], default=None)
+    total_run = max(athletes_stats, key=lambda x: x['sum_distance'], default=None)
+    speed_avg = max(athletes_stats, key=lambda x: x['avg_speed'], default=None)
+
+    # Step 5: Prepare the response data
+    response_data = {
+        'longest_run_user': longest_run['athlete_id'] if longest_run else None,
+        'longest_run_value': longest_run['max_distance'] if longest_run else 0,
+        'total_run_user': total_run['athlete_id'] if total_run else None,
+        'total_run_value': total_run['sum_distance'] if total_run else 0,
+        'speed_avg_user': speed_avg['athlete_id'] if speed_avg else None,
+        'speed_avg_value': speed_avg['avg_speed'] if speed_avg else 0,
+    }
+
+    return JsonResponse(response_data)
+
+
+# 7
+# def analytics_for_coach(request, coach_id):
+#     # Get the coach by ID from the URL
+#     coach = get_object_or_404(User, id=coach_id)
+#     athlete_ids = AthleteCoachRelation.objects.filter(coach=coach).values_list('athlete_id', flat=True)
+#
+#     # Find the athlete with the maximum distance
+#     max_distance_run = (
+#         Run.objects.filter(athlete__id__in=athlete_ids)
+#         .annotate(max_distance=Max('distance'))
+#         .order_by('-max_distance')
+#         .values('athlete_id', 'max_distance')
+#         .first()
+#     )
+#
+#     max_sum_distance_run = (
+#         Run.objects.filter(athlete__id__in=athlete_ids)
+#         .values('athlete_id')
+#         .annotate(sum_distance=Sum('distance'))
+#         .order_by('-sum_distance')
+#         .values('athlete_id', 'sum_distance')
+#         .first()
+#     )
+#
+#     # Find the athlete with the maximum average speed
+#     max_avg_speed_run = (
+#         Run.objects.filter(athlete__id__in=athlete_ids)
+#         .values('athlete_id')
+#         .annotate(avg_speed=Avg('speed'))
+#         .order_by('-avg_speed')
+#         .values('athlete_id', 'avg_speed')
+#         .first()
+#     )
+#
+#     return JsonResponse(
+#         {'longest_run_user': max_distance_run['athlete_id'],
+#          'longest_run_value': max_distance_run['max_distance'],
+#          'total_run_user': max_sum_distance_run['athlete_id'],
+#          'total_run_value': max_sum_distance_run['sum_distance'],
+#          'speed_avg_user': max_avg_speed_run['athlete_id'],
+#          'speed_avg_value': max_avg_speed_run['avg_speed']
+#          }
+#     )
 
 
 # 23
@@ -564,7 +626,6 @@ def analytics_for_coach(request, coach_id):
 #             'speed_avg_value': max_avg_speed,
 #         }
 #     )
-
 
 
 # 53
