@@ -409,9 +409,9 @@ def analytics_for_coach(request, coach_id):
         .first()
     )
 
-    # Find the athlete with the maximum sum of distances
     max_sum_distance_run = (
         Run.objects.filter(athlete__id__in=athlete_ids)
+        .values('athlete_id')
         .annotate(sum_distance=Sum('distance'))
         .order_by('-sum_distance')
         .values('athlete_id', 'sum_distance')
