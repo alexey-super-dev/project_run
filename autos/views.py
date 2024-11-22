@@ -139,7 +139,7 @@ class RunsViewSet(viewsets.ModelViewSet):
             # run.run_time_seconds = calculate_run_time_by_id(run)
             run.run_time_seconds = calculate_run_time_different_way(run)
 
-        run.carbon_emission = call_carboninterface('123', run.distance)
+        # run.carbon_emission = call_carboninterface(settings.CARBON_INTERFACE_API_KEY, run.distance)
         run.save()
 
         if Run.objects.filter(athlete_id=run.athlete_id, status='finished').count() == 10:
