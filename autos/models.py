@@ -52,4 +52,4 @@ class ChallengeRecord(models.Model):
 class AthleteInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     level = models.IntegerField(null=True, blank=True)
-    comment = models.CharField(max_length=255, default='')
+    goals = models.CharField(max_length=255, default='')
