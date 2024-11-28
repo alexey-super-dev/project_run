@@ -48,3 +48,8 @@ class ChallengeRecord(models.Model):
     class Meta:
         unique_together = ('athlete', 'name')
 
+
+class AthleteInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    level = models.IntegerField(null=True, blank=True)
+    comment = models.CharField(max_length=255, default='')

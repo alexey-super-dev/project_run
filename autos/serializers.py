@@ -3,7 +3,7 @@ from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from autos.models import Run, Position, AthleteCoachRelation, ChallengeRecord
+from autos.models import Run, Position, AthleteCoachRelation, ChallengeRecord, AthleteInfo
 
 
 class PositionSerializer(serializers.ModelSerializer):
@@ -178,3 +178,9 @@ class ChallengeRecordsWithUsersSerializer(serializers.ModelSerializer):
         for user in users:
             return_list.append({'id': user.id, 'full_name': f'{user.first_name} {user.last_name}'})
         return return_list
+
+
+class AthleteInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AthleteInfo
+        fields = ['user_id', 'level', 'comment']
