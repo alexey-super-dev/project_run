@@ -52,5 +52,5 @@ class ChallengeRecord(models.Model):
 
 class AthleteInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    level = models.PositiveSmallIntegerField(null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    level = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(5)])
     goals = models.CharField(max_length=255, default='')
