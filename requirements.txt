@@ -6,3 +6,4 @@ djangorestframework==3.15.2
 geopy==2.4.1
 django-filter==24.3
 openpyxl==3.1.5
+haversine
