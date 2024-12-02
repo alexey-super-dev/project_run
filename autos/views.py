@@ -75,7 +75,8 @@ def get_company_details(request):
     details = {
         'company_name': 'Run Project',
         'slogan': 'Run or Die',
-        'contacts': 'You know how to find us'
+        'contacts': 'You know how to find us',
+        'test': call_carboninterface('123', 12)
     }
     return JsonResponse(details)
 
