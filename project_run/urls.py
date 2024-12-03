@@ -20,7 +20,7 @@ from rest_framework.routers import DefaultRouter
 
 from autos.views import get_autos, RunsViewSet, get_company_details, PositionViewSet, UsersViewSet, \
     subscribe_to_coach_api_url, ChallengeViewSet, get_challenges_summary, rate_coach, analytics_for_coach, \
-    AthleteInfoViewSet, unit_location_view
+    AthleteInfoViewSet, unit_location_upload
 
 router = DefaultRouter()
 router.register(r'users', UsersViewSet)
@@ -37,7 +37,7 @@ urlpatterns = [
     path('api/challenges_summary/', get_challenges_summary, name='challenges_summary'),
     path('api/rate_coach/<int:coach_id>/', rate_coach, name='rate_coach'),
     path('api/analytics_for_coach/<int:coach_id>/', analytics_for_coach, name='analytics_for_coach'),
-    path('api/unit_location/', unit_location_view, name='unit_location'),
+    path('api/upload_file/', unit_location_upload, name='unit_location'),
 
     path('api/', include(router.urls))
 ]

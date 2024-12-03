@@ -719,6 +719,6 @@ class AthleteInfoViewSet(viewsets.ModelViewSet):
         return user_profile
 
 
-def unit_location_view(request):
+def unit_location_upload(request):
     return 'asd'
     return ['a', 'b', 'c']
