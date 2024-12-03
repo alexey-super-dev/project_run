@@ -717,3 +717,8 @@ class AthleteInfoViewSet(viewsets.ModelViewSet):
         user_profile, created = AthleteInfo.objects.get_or_create(user=user)
 
         return user_profile
+
+
+def unit_location_view(request):
+    return 'asd'
+    return ['a', 'b', 'c']
