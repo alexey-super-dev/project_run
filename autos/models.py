@@ -54,3 +54,4 @@ class AthleteInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     level = models.IntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(5)])
     goals = models.CharField(max_length=255, default='')
+    test_field = models.CharField(max_length=255, default='123')
