@@ -1,5 +1,6 @@
 import json
 
+import openpyxl
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import Max, Sum, Avg, F
@@ -16,8 +17,10 @@ from geopy.distance import geodesic
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.views import APIView
 
 from .logic import calculate_run_time_by_id, calculate_run_time, calculate_run_time_different_way, calculate_median, \
     call_carboninterface
@@ -719,5 +722,27 @@ class AthleteInfoViewSet(viewsets.ModelViewSet):
         return user_profile
 
 
-def unit_location_upload(request):
-    return JsonResponse(['a', 'b', 'c'], safe=False)
+class UploadXLSX(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, *args, **kwargs):
+        file_obj = request.FILES.get('file')
+        if not file_obj:
+            return Response({"error": "No file uploaded"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Open the workbook
+            workbook = openpyxl.load_workbook(file_obj)
+
+            # Select the active worksheet
+            worksheet = workbook.active
+
+            # Read the contents
+            data = []
+            for row in worksheet.iter_rows(values_only=True):
+                data.append(row)
+
+            # Return the parsed data as JSON
+            return Response({"data": data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
