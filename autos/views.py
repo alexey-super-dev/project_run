@@ -720,5 +720,5 @@ class AthleteInfoViewSet(viewsets.ModelViewSet):
 
 
 def unit_location_upload(request):
-    return 'asd'
+    return len('asd')/0
     return ['a', 'b', 'c']

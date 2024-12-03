@@ -37,7 +37,7 @@ urlpatterns = [
     path('api/challenges_summary/', get_challenges_summary, name='challenges_summary'),
     path('api/rate_coach/<int:coach_id>/', rate_coach, name='rate_coach'),
     path('api/analytics_for_coach/<int:coach_id>/', analytics_for_coach, name='analytics_for_coach'),
-    path('api/upload_file/', unit_location_upload, name='unit_location'),
+    path('api/upload_file/', unit_location_upload, name='unit_location_upload'),
 
     path('api/', include(router.urls))
 ]
