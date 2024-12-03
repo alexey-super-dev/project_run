@@ -720,5 +720,5 @@ class AthleteInfoViewSet(viewsets.ModelViewSet):
 
 
 def unit_location_upload(request):
-    return JsonResponse('result')
+    return JsonResponse('result', safe=False)
     return ['a', 'b', 'c']
