@@ -742,8 +742,8 @@ class UploadXLSX(APIView):
             data = []
             for row in worksheet.iter_rows(values_only=True):
                 # if random.choice([True, False]):
-                if type(row[0]) != str or type(row[1]) != int or not (-90 <= int(row[2]) <= 90) or not (-180 <= int(row[3]) <= 180) or not validate_url(row[4]):
-                    data.append(row)
+                # if type(row[0]) != str or type(row[1]) != int or not (-90 <= int(row[2]) <= 90) or not (-180 <= int(row[3]) <= 180) or not validate_url(row[4]):
+                data.append(row)
 
             # Return the parsed data as JSON
             return JsonResponse(data, safe=False)
