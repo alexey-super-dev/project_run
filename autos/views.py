@@ -1,4 +1,5 @@
 import json
+import random
 
 import openpyxl
 from django.conf import settings
@@ -740,7 +741,8 @@ class UploadXLSX(APIView):
             # Read the contents
             data = []
             for row in worksheet.iter_rows(values_only=True):
-                data.append(row)
+                if random.choice([True, False]):
+                    data.append(row)
 
             # Return the parsed data as JSON
             return JsonResponse(data, safe=False)
