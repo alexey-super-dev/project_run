@@ -743,6 +743,6 @@ class UploadXLSX(APIView):
                 data.append(row)
 
             # Return the parsed data as JSON
-            return Response({"data": data}, status=status.HTTP_200_OK)
+            return JsonResponse(data, safe=False)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
