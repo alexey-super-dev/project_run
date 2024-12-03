@@ -20,7 +20,7 @@ from rest_framework.routers import DefaultRouter
 
 from autos.views import get_autos, RunsViewSet, get_company_details, PositionViewSet, UsersViewSet, \
     subscribe_to_coach_api_url, ChallengeViewSet, get_challenges_summary, rate_coach, analytics_for_coach, \
-    AthleteInfoViewSet, unit_location_upload, UploadXLSX
+    AthleteInfoViewSet, UploadXLSX
 
 router = DefaultRouter()
 router.register(r'users', UsersViewSet)
