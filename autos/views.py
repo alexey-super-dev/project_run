@@ -744,7 +744,7 @@ class UploadXLSX(APIView):
                 if i == 0:
                     continue
                 valid = True
-                types = [str, int, int, int, str]
+                types = [str, int, float, float, str]
                 for index, sub_row in enumerate(row):
                     if type(row[index]) != types[index]:
                         valid = False
