@@ -768,8 +768,8 @@ class UploadXLSX(APIView):
             for item in to_create:
                 CollectableItem.objects.create(name=item[0],
                                                value=item[1],
-                                               latitude=item[2],
-                                               longitude=item[3],
+                                               latitude=item[3],
+                                               longitude=item[2],
                                                picture=item[4],
                                                )
 
