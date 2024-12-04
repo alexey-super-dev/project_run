@@ -746,13 +746,13 @@ class UploadXLSX(APIView):
                 valid = True
                 types = [str, int, float, float, str]
                 for index, sub_row in enumerate(row):
-                    if type(row[index]) != types[index]:
+                    if type(sub_row) != types[index]:
                         valid = False
 
-                if not type(row[2]) == int or not (-90 <= int(row[2]) <= 90):
+                if not type(row[2]) == float or not (-90 <= row[2] <= 90):
                     valid = False
 
-                if not type(row[2]) == int or not (-180 <= int(row[3]) <= 180):
+                if not type(row[3]) == float or not (-180 <= row[3] <= 180):
                     valid = False
 
                 if not valid:
