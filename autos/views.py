@@ -740,11 +740,28 @@ class UploadXLSX(APIView):
 
             # Read the contents
             data = []
+            header = True
             for row in worksheet.iter_rows(values_only=True):
+                valid = True
                 types = [str, int, int, int, str]
                 for index, sub_row in enumerate(row):
                     if type(row[index]) != types[index]:
+                        valid = False
                         data.append(row)
+
+                if not (-90 <= int(row[2]) <= 90):
+                    valid = False
+                    data.append(row)
+
+                if not (-180 <= int(row[3]) <= 180):
+                    valid = False
+                    data.append(row)
+
+                if not header and not valid:
+                    data.append(row)
+
+                header = False
+
                 # if random.choice([True, False]):
                 # if type(row[0]) != str or type(row[1]) != int or not (-90 <= int(row[2]) <= 90) or not (-180 <= int(row[3]) <= 180) or not validate_url(row[4]):
 
