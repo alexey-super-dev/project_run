@@ -740,8 +740,9 @@ class UploadXLSX(APIView):
 
             # Read the contents
             data = []
-            header = True
-            for row in worksheet.iter_rows(values_only=True):
+            for i, row in enumerate(worksheet.iter_rows(values_only=True)):
+                if i == 0:
+                    continue
                 valid = True
                 types = [str, int, int, int, str]
                 for index, sub_row in enumerate(row):
@@ -754,10 +755,6 @@ class UploadXLSX(APIView):
                 if not type(row[2]) == int or not (-180 <= int(row[3]) <= 180):
                     valid = False
 
-                if not header and not valid:
-                    valid = False
-
-                header = False
                 if not valid:
                     data.append(row)
 
