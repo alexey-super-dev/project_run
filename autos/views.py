@@ -26,9 +26,10 @@ from rest_framework.views import APIView
 from .logic import calculate_run_time_by_id, calculate_run_time, calculate_run_time_different_way, calculate_median, \
     call_carboninterface, validate_url
 from .models import Autos, Run, Position, AthleteCoachRelation, ChallengeRecord, \
-    AthleteInfo  # Ensure the Autos model is imported
+    AthleteInfo, CollectableItem  # Ensure the Autos model is imported
 from .serializers import RunSerializer, PositionSerializer, UserSerializer, DetailAthleteSerializer, \
-    DetailCoachSerializer, ChallengeRecordSerializer, ChallengeRecordsWithUsersSerializer, AthleteInfoSerializer
+    DetailCoachSerializer, ChallengeRecordSerializer, ChallengeRecordsWithUsersSerializer, AthleteInfoSerializer, \
+    CollectableItemSerializer
 
 
 def get_autos(request):
@@ -740,6 +741,7 @@ class UploadXLSX(APIView):
 
             # Read the contents
             data = []
+            to_create = []
             for i, row in enumerate(worksheet.iter_rows(values_only=True)):
                 if i == 0:
                     continue
@@ -760,11 +762,23 @@ class UploadXLSX(APIView):
 
                 if not valid:
                     data.append(row)
+                else:
+                    to_create.append(row)
 
-                # if random.choice([True, False]):
-                # if type(row[0]) != str or type(row[1]) != int or not (-90 <= int(row[2]) <= 90) or not (-180 <= int(row[3]) <= 180) or not validate_url(row[4]):
+            for item in to_create:
+                CollectableItem.objects.create(name=item[0],
+                                               value=item[1],
+                                               latitude=item[2],
+                                               longitude=item[3],
+                                               picture=item[4],
+                                               )
 
             # Return the parsed data as JSON
             return JsonResponse(data, safe=False)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class CollectableItemViewSet(viewsets.ModelViewSet):
+    queryset = CollectableItem.objects.all()
+    serializer_class = CollectableItemSerializer

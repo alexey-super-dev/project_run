@@ -3,7 +3,7 @@ from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from autos.models import Run, Position, AthleteCoachRelation, ChallengeRecord, AthleteInfo
+from autos.models import Run, Position, AthleteCoachRelation, ChallengeRecord, AthleteInfo, CollectableItem
 
 
 class PositionSerializer(serializers.ModelSerializer):
@@ -184,3 +184,9 @@ class AthleteInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = AthleteInfo
         fields = ['user_id', 'level', 'goals', 'test_field']
+
+
+class CollectableItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CollectableItem
+        fields = ['name', 'value', 'longitude', 'latitude', 'picture']

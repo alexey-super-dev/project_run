@@ -55,3 +55,11 @@ class AthleteInfo(models.Model):
     level = models.IntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(5)])
     goals = models.CharField(max_length=255, default='')
     test_field = models.CharField(max_length=255, default='123')
+
+
+class CollectableItem(models.Model):
+    name = models.CharField(max_length=255)
+    value = models.IntegerField()
+    latitude = models.DecimalField(max_digits=20, decimal_places=10)
+    longitude = models.DecimalField(max_digits=20, decimal_places=10)
+    picture = models.CharField(max_length=255, default='')
