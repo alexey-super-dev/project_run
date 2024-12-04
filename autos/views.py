@@ -749,11 +749,11 @@ class UploadXLSX(APIView):
                         valid = False
                         data.append(row)
 
-                if not (-90 <= int(row[2]) <= 90):
+                if not type(row[2]) == int or not (-90 <= int(row[2]) <= 90):
                     valid = False
                     data.append(row)
 
-                if not (-180 <= int(row[3]) <= 180):
+                if not type(row[2]) == int or not (-180 <= int(row[3]) <= 180):
                     valid = False
                     data.append(row)
 
