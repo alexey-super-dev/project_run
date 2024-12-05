@@ -189,4 +189,4 @@ class AthleteInfoSerializer(serializers.ModelSerializer):
 class CollectableItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CollectableItem
-        fields = ['name', 'value', 'longitude', 'latitude', 'picture']
+        fields = ['name', 'uid', 'value', 'longitude', 'latitude', 'picture']

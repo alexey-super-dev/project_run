@@ -732,52 +732,49 @@ class UploadXLSX(APIView):
         if not file_obj:
             return Response({"error": "No file uploaded"}, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            # Open the workbook
-            workbook = openpyxl.load_workbook(file_obj)
+        # Open the workbook
+        workbook = openpyxl.load_workbook(file_obj)
 
-            # Select the active worksheet
-            worksheet = workbook.active
+        # Select the active worksheet
+        worksheet = workbook.active
 
-            # Read the contents
-            data = []
-            to_create = []
-            for i, row in enumerate(worksheet.iter_rows(values_only=True)):
-                if i == 0:
-                    continue
-                valid = True
-                types = [str, str, int, float, float, str]
-                for index, sub_row in enumerate(row):
-                    if type(sub_row) != types[index]:
-                        valid = False
-
-                if not type(row[2]) == float or not (-90 <= row[2] <= 90):
+        # Read the contents
+        data = []
+        to_create = []
+        for i, row in enumerate(worksheet.iter_rows(values_only=True)):
+            if i == 0:
+                continue
+            valid = True
+            types = [str, str, int, float, float, str]
+            for index, sub_row in enumerate(row):
+                if type(sub_row) != types[index]:
                     valid = False
 
-                if not type(row[3]) == float or not (-180 <= row[3] <= 180):
-                    valid = False
+            if not type(row[2]) == float or not (-90 <= row[2] <= 90):
+                valid = False
 
-                if not validate_url(row[4]):
-                    data.append(row)
+            if not type(row[3]) == float or not (-180 <= row[3] <= 180):
+                valid = False
 
-                if not valid:
-                    data.append(row)
-                else:
-                    to_create.append(row)
+            if not validate_url(row[4]):
+                data.append(row)
 
-            for item in to_create:
-                CollectableItem.objects.create(name=item[0],
-                                               uid=item[1],
-                                               value=item[2],
-                                               latitude=item[3],
-                                               longitude=item[4],
-                                               picture=item[5],
-                                               )
+            if not valid:
+                data.append(row)
+            else:
+                to_create.append(row)
 
-            # Return the parsed data as JSON
-            return JsonResponse(data, safe=False)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        for item in to_create:
+            CollectableItem.objects.create(name=item[0],
+                                           uid=item[1],
+                                           value=item[2],
+                                           latitude=item[3],
+                                           longitude=item[4],
+                                           picture=item[5],
+                                           )
+
+        # Return the parsed data as JSON
+        return JsonResponse(data, safe=False)
 
 
 class CollectableItemViewSet(viewsets.ModelViewSet):
