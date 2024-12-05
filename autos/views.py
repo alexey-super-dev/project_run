@@ -746,7 +746,7 @@ class UploadXLSX(APIView):
                 if i == 0:
                     continue
                 valid = True
-                types = [str, int, float, float, str]
+                types = [str, str, int, float, float, str]
                 for index, sub_row in enumerate(row):
                     if type(sub_row) != types[index]:
                         valid = False
@@ -767,10 +767,11 @@ class UploadXLSX(APIView):
 
             for item in to_create:
                 CollectableItem.objects.create(name=item[0],
-                                               value=item[1],
+                                               uid=item[1],
+                                               value=item[2],
                                                latitude=item[3],
-                                               longitude=item[2],
-                                               picture=item[4],
+                                               longitude=item[4],
+                                               picture=item[5],
                                                )
 
             # Return the parsed data as JSON
