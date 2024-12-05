@@ -750,13 +750,13 @@ class UploadXLSX(APIView):
                 if type(sub_row) != types[index]:
                     valid = False
 
-            if not type(row[2]) == float or not (-90 <= row[2] <= 90):
+            if not type(row[3]) == float or not (-90 <= row[3] <= 90):
                 valid = False
 
-            if not type(row[3]) == float or not (-180 <= row[3] <= 180):
+            if not type(row[4]) == float or not (-180 <= row[4] <= 180):
                 valid = False
 
-            if not validate_url(row[4]):
+            if not validate_url(row[5]):
                 data.append(row)
 
             if not valid:
