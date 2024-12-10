@@ -58,6 +58,7 @@ class AthleteInfo(models.Model):
 
 
 class CollectableItem(models.Model):
+    users = models.ManyToManyField(User, related_name='collectable_items')
     name = models.CharField(max_length=255)
     uid = models.CharField(max_length=50)
     value = models.IntegerField()

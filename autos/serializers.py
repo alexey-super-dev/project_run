@@ -80,8 +80,15 @@ class UserSerializer(serializers.ModelSerializer):
         # return Run.objects.filter(athlete_id=obj.id, status='finished').count()
 
 
+class CollectableItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CollectableItem
+        fields = ['id', 'name', 'uid', 'value', 'latitude', 'longitude', 'picture']
+
+
 class DetailAthleteSerializer(UserSerializer):
     coach = serializers.SerializerMethodField()
+    items = CollectableItemSerializer(many=True, read_only=True, source='collectable_items')
 
     def get_coach(self, obj):
         model = AthleteCoachRelation.objects.filter(athlete_id=obj.id).first()
@@ -90,7 +97,7 @@ class DetailAthleteSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'last_name', 'first_name', 'type', 'coach']
+        fields = ['id', 'username', 'last_name', 'first_name', 'type', 'coach', 'items']
 
 
 def calculate_average(numbers):
