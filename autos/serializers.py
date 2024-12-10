@@ -191,9 +191,3 @@ class AthleteInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = AthleteInfo
         fields = ['user_id', 'level', 'goals', 'test_field']
-
-
-class CollectableItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CollectableItem
-        fields = ['name', 'uid', 'value', 'longitude', 'latitude', 'picture']

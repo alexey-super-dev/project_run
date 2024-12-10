@@ -197,6 +197,13 @@ class PositionViewSet(viewsets.ModelViewSet):
 
         position.distance = round(distance, 2) + previous_position.distance
         position.save()
+
+        for item in CollectableItem.objects.all():
+            start_item = (item.latitude, item.longitude)
+            distance_to_item = geodesic(start_item, end).meters
+            if distance_to_item <= 100:
+                item.users.add(position.run.athlete_id)
+
         return position
 
 
