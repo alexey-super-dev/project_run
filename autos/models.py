@@ -52,9 +52,8 @@ class ChallengeRecord(models.Model):
 
 class AthleteInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    level = models.IntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    weight = models.IntegerField(null=True)
     goals = models.CharField(max_length=255, default='')
-    test_field = models.CharField(max_length=255, default='123')
 
 
 class CollectableItem(models.Model):
