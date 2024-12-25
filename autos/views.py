@@ -308,7 +308,8 @@ def get_challenges_summary(request):  # 6
         data = {'name_to_display': challenge_type[1], 'athletes': []}
         users_info = User.objects.filter(challenges__name=challenge_type[0])
         for user in users_info:
-            data['athletes'].append({'full_name': f'{user.first_name} {user.last_name}', 'id': user.id})
+            data['athletes'].append({'full_name': f'{user.first_name} {user.last_name}', 'id': user.id,
+                                     'username': user.username})
         result.append(data)
     return JsonResponse(result, safe=False)
 
