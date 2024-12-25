@@ -190,4 +190,4 @@ class ChallengeRecordsWithUsersSerializer(serializers.ModelSerializer):
 class AthleteInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = AthleteInfo
-        fields = ['user_id', 'weight', 'goals', 'test_field']
+        fields = ['user_id', 'weight', 'goals']
