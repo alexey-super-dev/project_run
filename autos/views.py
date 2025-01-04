@@ -18,6 +18,7 @@ from geopy.distance import geodesic
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -86,6 +87,10 @@ def get_company_details(request):
     return JsonResponse(details)
 
 
+class CustomPagination(PageNumberPagination):
+    page_size_query_param = 'size'
+
+
 class RunsViewSet(viewsets.ModelViewSet):
     queryset = Run.objects.all().select_related('athlete')
     serializer_class = RunSerializer
@@ -93,6 +98,7 @@ class RunsViewSet(viewsets.ModelViewSet):
     filterset_fields = ['status', 'id']
     # filterset_fields = ['status']
     ordering_fields = ['created_at']
+    pagination_class = CustomPagination
 
     @action(detail=True, methods=['post'], url_path='start')
     def start_run(self, request, pk=None):
