@@ -1,6 +1,6 @@
 import re
 
-# import requests
+import requests
 
 from autos.models import Position
 
