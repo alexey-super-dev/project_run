@@ -82,7 +82,7 @@ def get_company_details(request):
         'company_name': 'Run Project',
         'slogan': 'Run or Die',
         'contacts': 'You know how to find us',
-        # 'test': call_carboninterface('123', 12)
+        'test': call_carboninterface('123', 12)
     }
     return JsonResponse(details)
 
@@ -96,7 +96,7 @@ class RunsViewSet(viewsets.ModelViewSet):
     serializer_class = RunSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['status', 'id']
-    # filterset_fields = ['status']
+    # filterset_fields = ['status']APIView
     ordering_fields = ['created_at']
     pagination_class = CustomPagination
 
