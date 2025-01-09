@@ -772,7 +772,7 @@ class UploadXLSX(APIView):
                 valid = False
 
             if not validate_url(row[5]):
-                data.append(row)
+                valid = False
 
             if not valid:
                 data.append(row)
@@ -796,70 +796,70 @@ class CollectableItemViewSet(viewsets.ModelViewSet):
     queryset = CollectableItem.objects.all()
     serializer_class = CollectableItemSerializer
 
-
-from geopy.distance import geodesic
-
-# Fixed point coordinates (latitude, longitude)
-fixed_point = (37.7749000000, -122.4185000000)
-
-# Your data
-data = [
-    {
-        "id": 113,
-        "run": 41,
-        "longitude": "-122.4194000000",
-        "latitude": "37.7749000000",
-        "date_time": "2024-12-10T08:00:00.000000",
-        "speed": 0,
-        "distance": 0
-    },
-    {
-        "id": 114,
-        "run": 41,
-        "longitude": "-122.4194000000",
-        "latitude": "37.8010000000",
-        "date_time": "2024-12-10T08:13:40.000000",
-        "speed": 3.53,
-        "distance": 2.9
-    },
-    {
-        "id": 115,
-        "run": 41,
-        "longitude": "-122.3977000000",
-        "latitude": "37.7993000000",
-        "date_time": "2024-12-10T08:27:20.000000",
-        "speed": 2.34,
-        "distance": 4.82
-    },
-    {
-        "id": 116,
-        "run": 41,
-        "longitude": "-122.4745000000",
-        "latitude": "37.8078000000",
-        "date_time": "2024-12-10T08:41:00.000000",
-        "speed": 8.33,
-        "distance": 11.65
-    }
-]
-
-# Iterate through each data point and calculate geodesic distance
-for entry in data:
-    try:
-        # Extract latitude and longitude, converting them from strings to floats
-        latitude = float(entry["latitude"])
-        longitude = float(entry["longitude"])
-
-        # Create a tuple for the current point
-        current_point = (latitude, longitude)
-
-        # Calculate geodesic distance
-        distance = geodesic(fixed_point, current_point).meters  # Distance in meters
-
-        # Add the calculated distance to the entry
-        entry['calculated_distance_m'] = distance
-
-        # Print the result
-        print(f"ID: {entry['id']} - Distance: {distance:.2f} meters")
-
-    except (KeyError, ValueError) as e:
-        print(f"Error processing entry ID {entry.get('id', 'Unknown')}")
+#
+# from geopy.distance import geodesic
+#
+# # Fixed point coordinates (latitude, longitude)
+# fixed_point = (37.7749000000, -122.4185000000)
+#
+# # Your data
+# data = [
+#     {
+#         "id": 113,
+#         "run": 41,
+#         "longitude": "-122.4194000000",
+#         "latitude": "37.7749000000",
+#         "date_time": "2024-12-10T08:00:00.000000",
+#         "speed": 0,
+#         "distance": 0
+#     },
+#     {
+#         "id": 114,
+#         "run": 41,
+#         "longitude": "-122.4194000000",
+#         "latitude": "37.8010000000",
+#         "date_time": "2024-12-10T08:13:40.000000",
+#         "speed": 3.53,
+#         "distance": 2.9
+#     },
+#     {
+#         "id": 115,
+#         "run": 41,
+#         "longitude": "-122.3977000000",
+#         "latitude": "37.7993000000",
+#         "date_time": "2024-12-10T08:27:20.000000",
+#         "speed": 2.34,
+#         "distance": 4.82
+#     },
+#     {
+#         "id": 116,
+#         "run": 41,
+#         "longitude": "-122.4745000000",
+#         "latitude": "37.8078000000",
+#         "date_time": "2024-12-10T08:41:00.000000",
+#         "speed": 8.33,
+#         "distance": 11.65
+#     }
+# ]
+#
+# # Iterate through each data point and calculate geodesic distance
+# for entry in data:
+#     try:
+#         # Extract latitude and longitude, converting them from strings to floats
+#         latitude = float(entry["latitude"])
+#         longitude = float(entry["longitude"])
+#
+#         # Create a tuple for the current point
+#         current_point = (latitude, longitude)
+#
+#         # Calculate geodesic distance
+#         distance = geodesic(fixed_point, current_point).meters  # Distance in meters
+#
+#         # Add the calculated distance to the entry
+#         entry['calculated_distance_m'] = distance
+#
+#         # Print the result
+#         print(f"ID: {entry['id']} - Distance: {distance:.2f} meters")
+#
+#     except (KeyError, ValueError) as e:
+#         print(f"Error processing entry ID {entry.get('id', 'Unknown')}")
