@@ -20,7 +20,8 @@ class PositionSerializer(serializers.ModelSerializer):
         return value
 
     def validate_longitude(self, value):
-        if not (-180 <= int(value) <= 180):
+        # if not (-180 <= int(value) <= 180):
+        if not int(value) <= 180:
             raise ValidationError(f'Latitude {value} out of range')
         return value
 
