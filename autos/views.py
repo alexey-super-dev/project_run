@@ -158,9 +158,13 @@ class RunsViewSet(viewsets.ModelViewSet):
         if Run.objects.filter(athlete_id=run.athlete_id, status='finished').count() == 10:
             ChallengeRecord.objects.create(athlete_id=run.athlete_id, name='RUN_10')
 
-        if Run.objects.filter(athlete_id=run.athlete_id, status='finished').aggregate(dis=Sum('distance')).get('dis',
-                                                                                                               None) > 50:
-            ChallengeRecord.objects.get_or_create(athlete_id=run.athlete_id, name='RUN_50')
+        # if Run.objects.filter(athlete_id=run.athlete_id, status='finished').aggregate(dis=Sum('distance')).get('dis', None) > 50:
+
+        amount = 0
+        for run in Run.objects.filter(athlete_id=run.athlete_id, status='finished'):
+            amount += run.distance
+            if amount > 50:
+                ChallengeRecord.objects.get_or_create(athlete_id=run.athlete_id, name='RUN_50')
 
         if (run.run_time_seconds and run.run_time_seconds <= 600) and (run.distance and run.distance >= 2):
             ChallengeRecord.objects.get_or_create(athlete_id=run.athlete_id, name='RUN_2_10')
