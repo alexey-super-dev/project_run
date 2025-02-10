@@ -40,7 +40,7 @@ class ChallengeRecord(models.Model):
     CHALLENGE_CHOICES = [
         ('RUN_10', 'Сделай 10 Забегов!'),
         ('RUN_50', 'Пробеги 50 километров!'),
-        ('RUN_2_10', 'Пробеги 2 километра меньше чем за 10 минут!')
+        ('RUN_2_10', '2 километра за 10 минут!')
     ]
 
     athlete = models.ForeignKey(User, on_delete=models.CASCADE, related_name='challenges')
