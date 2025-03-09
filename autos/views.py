@@ -88,7 +88,7 @@ def get_company_details(request):
 
 
 class CustomPagination(PageNumberPagination):
-    page_size_query_param = 'size'
+    page_size_query_param = 'x_size'
 
 
 class RunsViewSet(viewsets.ModelViewSet):
@@ -222,7 +222,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['first_name', 'last_name', 'id']
-    # pagination_class = CustomPagination
+    pagination_class = CustomPagination
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
