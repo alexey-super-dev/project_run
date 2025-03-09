@@ -88,7 +88,7 @@ def get_company_details(request):
 
 
 class CustomPagination(PageNumberPagination):
-    page_size_query_param = 'x_size'
+    page_size_query_param = 'size'
 
 
 class RunsViewSet(viewsets.ModelViewSet):
