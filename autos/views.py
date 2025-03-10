@@ -94,9 +94,9 @@ class CustomPagination(PageNumberPagination):
 class RunsViewSet(viewsets.ModelViewSet):
     queryset = Run.objects.all().select_related('athlete')
     serializer_class = RunSerializer
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['status', 'id', 'athlete']
-    # filterset_fields = ['status']APIView
+    filter_backends = [filters.OrderingFilter]
+    # filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    # filterset_fields = ['status', 'id', 'athlete']
     ordering_fields = ['created_at']
     pagination_class = CustomPagination
 
