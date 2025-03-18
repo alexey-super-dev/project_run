@@ -91,6 +91,7 @@ class CustomPagination(PageNumberPagination):
     page_size_query_param = 'size'
 
 
+
 class RunsViewSet(viewsets.ModelViewSet):
     queryset = Run.objects.all().select_related('athlete')
     serializer_class = RunSerializer
