@@ -97,7 +97,7 @@ class RunsViewSet(viewsets.ModelViewSet):
     serializer_class = RunSerializer
     # filter_backends = [filters.OrderingFilter]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['status', 'id', 'athlete']
+    filterset_fields = ['status', 'athlete']
     ordering_fields = ['created_at']
     pagination_class = CustomPagination
 

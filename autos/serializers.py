@@ -146,12 +146,14 @@ class DetailCoachSerializer(UserSerializer):
 
 
 class RunSerializer(serializers.ModelSerializer):
-    athlete_data = ShortUserSerializer(read_only=True, source='athlete')
+    # athlete_data = ShortUserSerializer(read_only=True, source='athlete')
 
     class Meta:
         model = Run
-        fields = ['id', 'comment', 'athlete', 'created_at', 'status', 'distance', 'run_time_seconds', 'speed',
-                  'athlete_data', 'carbon_emission']
+        # fields = ['id', 'comment', 'athlete', 'created_at', 'status', 'distance', 'run_time_seconds', 'speed',
+        #           'athlete_data', 'carbon_emission']
+
+        fields = ['id', 'comment', 'athlete']
 
 
 class ChallengeRecordSerializer(serializers.ModelSerializer):
