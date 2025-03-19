@@ -93,7 +93,7 @@ class CustomPagination(PageNumberPagination):
 
 
 class RunsViewSet(viewsets.ModelViewSet):
-    queryset = Run.objects.all()
+    queryset = Run.objects.all().select_related('athlete')
     serializer_class = RunSerializer
     # filter_backends = [filters.OrderingFilter]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
