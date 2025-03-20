@@ -90,6 +90,8 @@ def get_company_details(request):
 class CustomPagination(PageNumberPagination):
     page_size_query_param = 'size'
 
+class RunPagination(PageNumberPagination):
+    page_size = 6  # Количество объектов на странице
 
 
 class RunsViewSet(viewsets.ModelViewSet):
@@ -99,7 +101,7 @@ class RunsViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['status', 'athlete']
     ordering_fields = ['created_at']
-    pagination_class = CustomPagination
+    pagination_class = RunPagination
 
     @action(detail=True, methods=['post'], url_path='start')
     def start_run(self, request, pk=None):
