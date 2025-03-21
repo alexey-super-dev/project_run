@@ -88,15 +88,15 @@ def get_company_details(request):
 
 
 class CustomPagination(PageNumberPagination):
-    page_size = 9  # Количество объектов на странице по умолчанию
+    # page_size = 9  # Количество объектов на странице по умолчанию
     page_size_query_param = 'size'
-    max_page_size = 12
+    # max_page_size = 12
 
 
 class RunPagination(PageNumberPagination):
-    page_size = 9  # Количество объектов на странице по умолчанию
+    # page_size = 9  # Количество объектов на странице по умолчанию
     page_size_query_param = 'size'
-    max_page_size = 12
+    # max_page_size = 12
 
 
 class RunsViewSet(viewsets.ModelViewSet):
