@@ -231,7 +231,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     search_fields = ['first_name', 'last_name', 'id']
     pagination_class = CustomPagination
-    ordering_fields = ['created_at']
+    ordering_fields = ['date_joined']
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
