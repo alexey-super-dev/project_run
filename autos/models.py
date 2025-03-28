@@ -54,6 +54,7 @@ class AthleteInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     weight = models.IntegerField(null=True, validators=[MinValueValidator(30), MaxValueValidator(200)])
     goals = models.CharField(max_length=255, default='')
+    test_field = models.CharField(max_length=255, default='')
 
 
 class CollectableItem(models.Model):
