@@ -35,6 +35,12 @@ class ShortUserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'last_name', 'first_name']
 
 
+class CollectableItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CollectableItem
+        fields = ['id', 'name', 'uid', 'value', 'latitude', 'longitude', 'picture']
+
+
 class UserSerializer(serializers.ModelSerializer):
     type = serializers.SerializerMethodField()  # Add a custom field
     # runs_finished = serializers.SerializerMethodField()  # Add a custom field
@@ -42,6 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
     # runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
     runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
     rating = serializers.SerializerMethodField()
+    items = CollectableItemSerializer(source='collectibleitems', many=True, read_only=True)
 
     class Meta:
         model = User
@@ -79,11 +86,6 @@ class UserSerializer(serializers.ModelSerializer):
         # return obj.run_set.filter(status='finished').count()
         # return Run.objects.filter(athlete_id=obj.id, status='finished').count()
 
-
-class CollectableItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CollectableItem
-        fields = ['id', 'name', 'uid', 'value', 'latitude', 'longitude', 'picture']
 
 
 class DetailAthleteSerializer(UserSerializer):
