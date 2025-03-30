@@ -48,12 +48,12 @@ class UserSerializer(serializers.ModelSerializer):
     # runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
     runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
     rating = serializers.SerializerMethodField()
-    # items = CollectableItemSerializer(source='collectibleitems', many=True, read_only=True)
+    items = CollectableItemSerializer(source='collectibleitems', many=True, read_only=True)
 
     class Meta:
         model = User
         # fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished']
-        fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'rating', 'date_joined']
+        fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'rating', 'date_joined', 'items']
 
     def get_rating(selff, obj):
         if hasattr(obj, 'average_rating'):
