@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
     # runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
     runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
     rating = serializers.SerializerMethodField()
-    items = CollectableItemSerializer(source='collectibleitems', many=True, read_only=True)
+    items = CollectableItemSerializer(source='collectable_items', many=True, read_only=True)
 
     class Meta:
         model = User
