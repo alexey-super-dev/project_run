@@ -264,7 +264,7 @@ class UsersViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(is_staff=False)
 
         queryset = queryset.annotate(average_rating=Avg('coaches__rate'))
-        return queryset.prefetch_related('collectable_items')
+        return queryset
 
 
 class ChallengeViewSet(viewsets.ReadOnlyModelViewSet):

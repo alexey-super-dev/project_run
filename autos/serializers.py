@@ -53,7 +53,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         # fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished']
-        fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'rating', 'date_joined', 'items']
+        fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'rating', 'date_joined', 'itemss']
 
     def get_rating(selff, obj):
         if hasattr(obj, 'average_rating'):
