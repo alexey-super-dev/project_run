@@ -46,7 +46,8 @@ class UserSerializer(serializers.ModelSerializer):
     # runs_finished = serializers.SerializerMethodField()  # Add a custom field
 
     # runs_in_progress = serializers.SerializerMethodField()  # Add a custom field
-    runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
+    runs_finished = serializers.SerializerMethodField()
+    # runs_finished = serializers.IntegerField(source='runs_finished_count', read_only=True)
     rating = serializers.SerializerMethodField()
 
     class Meta:
@@ -54,16 +55,16 @@ class UserSerializer(serializers.ModelSerializer):
         # fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished']
         fields = ['id', 'username', 'last_name', 'first_name', 'type', 'runs_finished', 'rating', 'date_joined']
 
-    # def get_rating(selff, obj):
-    #     if hasattr(obj, 'average_rating'):
-    #         if obj.average_rating:
-    #             return float(obj.average_rating)
+    def get_rating(selff, obj):
+        if hasattr(obj, 'average_rating'):
+            if obj.average_rating:
+                return float(obj.average_rating)
 
     # 27 for average
-    def get_rating(self, obj):
-        rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
-        if rating is not None:
-            return float(rating)
+    # def get_rating(self, obj):
+    #     rating = AthleteCoachRelation.objects.filter(coach_id=obj.id).aggregate(avg=Avg('rate'))['avg']
+    #     if rating is not None:
+    #         return float(rating)
 
     # 18 - 24 - 27 + +  for iteration
     # def get_rating(self, obj):
@@ -81,9 +82,9 @@ class UserSerializer(serializers.ModelSerializer):
         else:
             return 'athlete'
 
-    # def get_runs_finished(self, obj):
-        # return obj.run_set.filter(status='finished').count()
-        # return Run.objects.filter(athlete_id=obj.id, status='finished').count()
+    def get_runs_finished(self, obj):
+        return obj.run_set.filter(status='finished').count()
+        return Run.objects.filter(athlete_id=obj.id, status='finished').count()
 
 
 
