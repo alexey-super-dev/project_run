@@ -80,7 +80,7 @@ def subscribe_to_coach_api_url(request, id):
 def get_company_details(request):
     details = {
         'company_name': 'Run Project',
-        'slogan': 'Run or Do nothing',
+        # 'slogan': 'Run or Do nothing',
         'contacts': 'You know how to find us',
         # 'test': call_carboninterface('123', 12)
     }
